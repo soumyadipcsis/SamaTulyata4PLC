@@ -24,3 +24,13 @@ Structure of Benchmarks zip file
       2.2 Faulty upgrades
      2.2.1 List of benchmarks
      2.2.1.* SFC file, PRES file for SFC faulty 
+
+# .PRES file
+  It contains all the include function requierd to run the TCL and SFC code.
+  Its generated from our in house model contructor. 
+# SamaTulyata.zip
+  It is the main equivalence checker which we have used in our experimentation
+
+# Ecclipse plugin
+ Ecclipse plugin version is also uploaded howeever, it works on c language. 
+  
