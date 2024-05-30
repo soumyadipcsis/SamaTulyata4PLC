@@ -32,5 +32,7 @@ Structure of Benchmarks zip file
   It is the main equivalence checker which we have used in our experimentation
 
 # Ecclipse plugin
- Ecclipse plugin version is also uploaded howeever, it works on c language. 
+ Ecclipse plugin version is also uploaded howeever, it works on c language.
+
+ # New version of equivalence checker has been uploaded for FM 2024. The checker is written in Python. To run this code need to install Z# solver.
   
