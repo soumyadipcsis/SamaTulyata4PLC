@@ -34,5 +34,6 @@ Structure of Benchmarks zip file
 # Ecclipse plugin
  Ecclipse plugin version is also uploaded howeever, it works on c language.
 
- # New version of equivalence checker has been uploaded for FM 2024. The checker is written in Python. To run this code need to install Z# solver.
+ # New version of equivalence checker 
+ The checker is written in Python. To run this code need to install Z3 solver. Its for FM 2024 eavluation.
   
