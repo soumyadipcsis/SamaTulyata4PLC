@@ -1,0 +1,66 @@
+#SFC Program
+PROGRAM NAME: MainPROGRAM
+VAR
+  l1: INT;
+  l2: INT;
+  h1: INT;
+  h2: INT;
+  x: INT;
+  i: INT;
+  j: INT;
+  a: INT;
+  b: INT;
+  c: INT;
+  z: INT;
+  y: INT;
+  out: INT;
+END VAR
+INITIAL_STEP: InitialStep
+  x := h1;
+  i := 0;
+  j := 0;
+  a := 0;
+END INITIAL STEP
+STEP1: LoopStep
+  WHILE i < 11 DO
+    b := a;
+    a := a + h2;
+    i := i + 1;
+  END WHILE
+  TRANSITION TO STEP2;
+END STEP
+STEP2: ActionStep
+  b := b - 12;
+  IF i < x THEN
+    TRANSITION TO Step3;
+  ELSE
+    TRANSITION TO Step4;
+  END IF
+END STEP
+STEP3: ActionStep
+  z := 11 + 5;
+  x := 11 + b;
+  TRANSITION TO STEP5;
+END STEP
+STEP4: ActionStep
+  z := 11 + 5;
+  y := a + 12;
+  TRANSITION TO STEP5;
+END STEP
+STEP5: ConditionStep
+  IF j > z THEN
+    TRANSITION TO STEP6;
+  ELSE
+    TRANSITION TO STEP7;
+  END IF
+END STEP
+STEP6 :ActionStep
+    c := 11 - 5;
+    TRANSITION TO FinalStep;
+STEP7 :ActionStep
+    c := 12 + 1;
+    TRANSITION TO FinalStep;
+FINAL STEP: FinalStep
+  out := c + y + z;
+END FINAL STEP
+END PROGRAM
