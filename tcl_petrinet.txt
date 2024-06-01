@@ -1,0 +1,53 @@
+#INPUT_PLACES
+p01
+#PLACES
+p01 0
+p02 0
+p03 0
+p04 0
+p05 0
+#TRANSITIONS
+t1: True
+t2: i<l1
+t3: i>=l1
+t4: i<x
+t5: i>=x
+t6: y>z
+t7: y<=z
+t8: True
+#FORMULAS
+f1: x=h1,i=0,j=0,a=0
+f2: b=a,a=a+h2,i=i+1
+f3: z=l1+5
+f4:b=b-l2,y=l1+b
+f5:y=a+l2
+f6:c=l1-5
+f7:c=l2+1
+f8: out=c+y+z
+#INPUT_ARCS
+p01 -> t1
+p02 -> t2
+p02 -> t3
+p03 -> t4
+p03 -> t5
+p04 -> t6
+p04 -> t7
+p05 -> t8
+#ARCS
+t1 -> f1
+t2 -> f2
+t3 -> f3
+t4 -> f4
+t5 -> f5
+t6 -> f6
+t7 -> f7
+t8 -> f8
+#OUTPUT_ARCS
+f1 -> p02
+f2 -> p02
+f3 -> p03
+f4 -> p04
+f5 -> p04
+f6 -> p05
+f7 -> p05
+f8 -> p01
