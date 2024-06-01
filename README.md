@@ -36,5 +36,5 @@ Structure of Benchmarks zip file
 
  # New version of equivalence checker 
  The checker is written in Python. To run this code need to install Z3 solver. Its for FM 2024 eavluation.
- Some screenshot for one simple example is give. 
+ Some screenshot for one simple example is given. 
   
