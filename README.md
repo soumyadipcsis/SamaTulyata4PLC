@@ -35,6 +35,6 @@ Structure of Benchmarks zip file
  Ecclipse plugin version is also uploaded howeever, it works on c language.
 
  # New version of equivalence checker 
- The checker is written in Python. To run this code need to install Z3 solver. 
+ The checker is written in Python. Now its work on oth TCL and SFC code. To run this code need to install Z3 solver. 
  Tool demo is also available.
   
