@@ -10,6 +10,7 @@ In the benchmark file is  contains all tcl files for experimentation.
 All bechmarks are opensource benchmarks. 
 Tool demo is also available for a small bechmarks.
 The tool output for a smaple program gives exhaustive results for the --detail flag option.
+Overall verification time including tool initialization takes 10-20 sec for large benchmarks. 
 
 # Ecclipse plugin
  First version of PN based equivalence checker Ecclipse plugin version is also uploaded for further comparison if possible. 
