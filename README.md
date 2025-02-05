@@ -13,6 +13,9 @@ The tool output for a smaple program gives exhaustive results for the --detail f
 Overall verification time including tool initialization takes 10-20 sec for large benchmarks.
 On the other hand for small benchmarks its carried out within a second. 
 That is because during initialization of tool program is loaded. For large programs, seperate variable list file is generated and the tool takes ~1-2 sec of time for small program and for large program it takes ~10-15 sec of time. 
+First version of Demo video is also uploaded. It is not integrated with propitory tool.
+All experimental time is taken with the version of tool which is integrated with propitory tool. 
+One can experiment the tool in isolation as an opensouce. However, the time calculation is missing in the code. one can use time() for path Equivalence routine. 
 
 # Ecclipse plugin
  First version of PN based equivalence checker Ecclipse plugin version is also uploaded for further comparison if possible. 
