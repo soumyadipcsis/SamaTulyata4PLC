@@ -1,0 +1,234 @@
+********************** Finding all paths of model N1 ***************
+Finding Cut-points type=0: Out-ports type=1 : 
+Inital Marking, type=2: Backedge, type=3: Bifurcation
+********************************************************************
+List of cut-points:
+p0(type=1) p2(type=3) p3(type=3) p4(type=3) p6(type=3) p7(type=3)
+p10(type=3) p12(type=3) p13(type=3) p14(type=3) p16(type=3)
+p17(type=3) p18(type=3) p20(type=2) p23(type=0) 
+*********************************************************************
+path 0 : < { t1 },{ t3} > 
+path 1 : < { t2 } > 
+path 2 : < { t4 } > 
+path 3 : < { t5 } >
+path 4 : < { t6 } >
+path 5 : < { t7 } > 
+path 6 : < { t8 }, { t10 } > 
+path 7 : < { t9 } >
+path 8 : < { t11 } > 
+path 9 : < { t12 }, { t16 } >
+path 10 : < { t13 }, { t15 } > 
+path 11 : < { t14 } >
+path 12 : < { t17 }, { t19 } > 
+path 13 : < { t18 } >
+path 14 : < { t20 } > 
+path 15 : < { t21 } > 
+path 16 : < { t22 } >
+path 17 : < { t23 } >
+path 18 : < { t24 }, { t26 } >
+path 19 : < { t25 } >
+path 20 : < { t27 } >
+path 21 : < { t28 } >
+path 22 : < { t29 } >
+path 23 : < { t30 } >
+path 24 : < { t31 }, { t33 } >
+path 25 : < { t32 } >
+path 26 : < { t34 }, { t35 } >
+path 27 : < { t36 }, { t37 } >
+
+************************************************************************
+
+
+
+
+
+
+********************** Finding all paths of model N2 *******************
+Finding Cut-points type=0: Out-ports type=1 : Inital Marking, 
+type=2: Backedge, type=3: Bifurcation
+************************************************************************
+List of cut-points:
+p_0(type=1) p_2(type=3) p_3(type=3) p_4(type=3) p_6(type=3) p_7(type=3)
+p_10(type=3) p_12(type=3) p_13(type=3) p_15(type=3) p_17(type=3)
+p_18(type=3) p_19(type=3) p_22(type=2) p_23(type=2) p_14(type=0) 
+************************************************************************
+path 0 : < { t_1 },{ t_3 } > 
+path 1 : < { t_2 } > 
+path 2 : < { t_4 } > 
+path 3 : < { t_5 } >
+path 4 : < { t_6 } >
+path 5 : < { t_7 } > 
+path 6 : < { t_8 }, { t_10 } > 
+path 7 : < { t_9 } >
+path 8 : < { t_11 } > 
+path 9 : < { t_12 }, { t_16 } >
+path 10 : < { t_13 }, { t_15 } > 
+path 11 : < { t_14 } >
+path 12 : < { t_17 }, { t_19 } > 
+path 13 : < { t_18 } >
+path 14 : < { t_20 } > 
+path 15 : < { t_21 } > 
+path 16 : < { t_22 } >
+path 17 : < { t_23 } >
+path 18 : < { t_24 }, { t_26 } >
+path 19 : < { t_25 } >
+path 20 : < { t_27 } >
+path 21 : < { t_28 } >
+path 22 : < { t_29 } >
+path 23 : < { t_30 } >
+path 24 : < { t_31 }, { t_32 }, { t_33 } >
+path 25 : < { t_39 } >
+path 26 : < { t_34 }, { t_36 } >
+path 27 : < { t_35 }, { t_37 } >
+path 28 : < { t_38 }, { t_40 } >
+
+*******************************************************************************
+
+
+
+
+******************************************************************************
+Equivalence Checking
+******************************************************************************
+For Path 0 ...THE CONDITION IS ManualButton-0!=0 THE DATA TRANSFORMATION IS 
+Mode:=0, AutoProcess:=0, ManualButton:=0 + 1*id_manual
+PATH 0 OF N2 IS MATCHED WITH PATH 0 OF N1
+
+For Path 1 ...THE CONDITION IS ManualButton-0=0 THE DATA TRANSFORMATION IS 
+Mode:=0, AutoProcess:=0, ManualButton:=0 + 1*id_ManualButton
+PATH 1 OF N2 IS MATCHED WITH PATH 1 OF N1
+
+For Path 2 ...THE CONDITION IS Mode-0=0 THE DATA TRANSFORMATION IS 
+ClipButton:=0 + 1*id_ClipButton
+PATH 1 OF N2 IS MATCHED WITH PATH 1 OF N1
+
+For Path 3 ...THE CONDITION IS Mode-0!=0 THE DATA TRANSFORMATION IS 
+--
+PATH 3 OF N2 IS MATCHED WITH PATH 3 OF N1
+
+For Path 4 ...THE CONDITION IS ClipButton-0>0 THE DATA TRANSFORMATION IS 
+ClipButton:=0 + 1*id_ClipButton, ConveyorA:=0 + 1*id_ConveyorA
+PATH 4 OF N2 IS MATCHED WITH PATH 4 OF N1
+
+For Path 5 ...THE CONDITION IS ClipButton-0<=0 THE DATA TRANSFORMATION IS 
+ClipButton:=0 + 1*id_ClipButton, TransferButton:=0 + 1*id_TransferButton,
+AutoButton:=0+1*id_AutoButton
+PATH 5 OF N2 IS MATCHED WITH PATH 5 OF N1
+
+For Path 6 ...THE CONDITION IS ConveyorA-0>0 THE DATA TRANSFORMATION IS 
+ConveyorA:=0 + 1*id_ConveyorA, RoboticArm-1=0
+PATH 6 OF N2 IS MATCHED WITH PATH 6 OF N1
+
+For Path 7 ...THE CONDITION IS ConveyorA-0<=0 THE DATA TRANSFORMATION IS 
+ConveyorA:=0 + 1*id_ConveyorA,TransferButton:=0 + 1*id_TransferButton
+PATH 7 OF N2 IS MATCHED WITH PATH 7 OF N1
+
+For Path 8 ...THE CONDITION IS TransferButton-0<=0 THE DATA TRANSFORMATION IS 
+TransferButton:=0 + 1*id_TransferButton,ReleaseButton:=0+1*id_ReleaseButton
+PATH 8 OF N2 IS MATCHED WITH PATH 8 OF N1
+
+For Path 9 ...THE CONDITION IS TransferButton-0>0 THE DATA TRANSFORMATION IS 
+TransferButton:=0 + 1*id_TransferButton,AutoButton:=0+1*id_AutoButton
+PATH 9 OF N2 IS MATCHED WITH PATH 9 OF N1
+
+For Path 10 ...THE CONDITION IS ReleaseButton-0>0 THE DATA TRANSFORMATION IS 
+ReleaseButton:=0 + 1*id_ReleaseButton,ConveyorB:=0,AutoButton:=0+1*id_AutoButton
+PATH 10 OF N2 IS MATCHED WITH PATH 10 OF N1
+
+For Path 11 ...THE CONDITION IS ReleaseButton-0<=0 THE DATA TRANSFORMATION IS 
+ReleaseButton:=0 + 1*id_ReleaseButton,ConveyorB:=0,AutoButton:=0+1*id_AutoButton
+PATH 11 OF N2 IS MATCHED WITH PATH 11 OF N1
+
+For Path 12 ...THE CONDITION IS AutoButton-0!=0 THE DATA TRANSFORMATION IS 
+AutoButton:=0+1*id_AutoButton, Mode:=1
+PATH 12 OF N2 IS MATCHED WITH PATH 12 OF N1
+
+For Path 13 ...THE CONDITION IS AutoButton-0=0 THE DATA TRANSFORMATION IS 
+AutoButton:=0+1*id_AutoButton
+PATH 13 OF N2 IS MATCHED WITH PATH 13 OF N1
+
+For Path 14 ...THE CONDITION IS Mode-0=0 THE DATA TRANSFORMATION IS 
+AutoProcess:=0+1*id_AutoProcess
+PATH 14 OF N2 IS MATCHED WITH PATH 14 OF N1
+
+For Path 15 ...THE CONDITION IS Mode-0!=0 THE DATA TRANSFORMATION IS 
+ConveyorB:=0,AutoProcess:=0
+PATH 15 OF N2 IS MATCHED WITH PATH 15 OF N1
+
+For Path 16 ...THE CONDITION IS AutoProcess-0=0 THE DATA TRANSFORMATION IS 
+AutoProcess:=0+1*id_AutoProcess,ConveyorA:=0 + 1*id_ConveyorA
+PATH 16 OF N2 IS MATCHED WITH PATH 16 OF N1
+
+For Path 17 ...THE CONDITION IS AutoProcess-0!=0 THE DATA TRANSFORMATION IS 
+AutoProcess:=0+1*id_AutoProcess,ConveyorB:=0 + 1*id_ConveyorB
+PATH 17 OF N2 IS MATCHED WITH PATH 17 OF N1
+
+For Path 18 ...THE CONDITION IS ConveyorA-0>0 THE DATA TRANSFORMATION IS 
+ConveyorA:=0+1*id_ConveyorA,ConveyorB:=0 + 1*id_ConveyorB
+PATH 18 OF N2 IS MATCHED WITH PATH 18 OF N1
+
+For Path 19 ...THE CONDITION IS ConveyorA-0<=0 THE DATA TRANSFORMATION IS 
+ConveyorA:=0+1*id_ConveyorA,ConveyorB:=0 + 1*id_ConveyorB
+PATH 19 OF N2 IS MATCHED WITH PATH 19 OF N1
+
+For Path 20 ...THE CONDITION IS ConveyorB-0>0 THE DATA TRANSFORMATION IS 
+ConveyorB:=0 + 1*id_ConveyorB,ConveyorA:=0+1*id_ConveyorA
+PATH 20 OF N2 IS MATCHED WITH PATH 20 OF N1
+
+
+
+For Path 21 ...THE CONDITION IS ConveyorB-0<=0 THE DATA TRANSFORMATION IS 
+ConveyorB:=0 + 1*id_ConveyorB,ConveyorB:=0,AutoProces:=0
+PATH 21 OF N2 IS MATCHED WITH PATH 21 OF N1
+
+For Path 22 ...THE CONDITION IS ConveyorA-0=0 THE DATA TRANSFORMATION IS 
+ConveyorA:=0 + 1*id_ConveyorA,LocalValue:=0+1*id_LocalValue
+PATH 22 OF N2 IS MATCHED WITH PATH 22 OF N1
+
+For Path 23 ...THE CONDITION IS ConveyorA-0!=0 THE DATA TRANSFORMATION IS 
+ConveyorA:=0 + 1*id_ConveyorA,ConveyorB:=0,AutoProces:=0
+PATH 23 OF N2 IS MATCHED WITH PATH 23 OF N1
+
+For Path 24 ...THE CONDITION IS LocalValue-0>0 THE DATA TRANSFORMATION IS 
+LocalValue:=0+1*id_LocalValue, I:=0
+UncommonVariableList=[J] of N2 
+Normalize Expression: I-0:=0, J-0:=0
+Direct Normalize form: I:=J:=0
+I and J are correspondance
+PATH 24 OF N2 IS MATCHED WITH PATH 24 OF N1
+
+For Path 25 ...THE CONDITION IS LocalValue-0<=0 THE DATA TRANSFORMATION IS 
+LocalValue:=0 + 1*id_LocalValue,ConveyorB:=0,AutoProces:=0
+PATH 25 OF N2 IS MATCHED WITH PATH 25 OF N1
+
+For Path 26 ...THE CONDITION IS I-LocalValue<0 
+Candidates Paths: PATH 26, PATH 27 for N2
+For PATH 26 ... THE CONDITION IS I-LocalValue<0 
+For PATH 27 ... THE CONDITION IS J-LocalValue<0
+CONDITION MATCHED......
+THE DATA TRANSFORMATION MISSMATHED....
+********PATH MERGING*******************
+PATH 26 MERGEs WITH PATH 27
+THE DATA TRANSFORMATION FOR MERGED PATH IS 
+1 * MatA - 10 * MatA = 0
+10 * MatB - 1 * MatB = 0
+1 * I - (I + 1) = 0
+1 * J - (J + 1) = 0
+1 * I - 1 * J = 0
+THE DATA TRANSFORMATION FOR Path 26 IS 
+1 * MatA - 10 * MatA = 0
+10 * MatB - 1 * MatB = 0
+1 * I - (I + 1) = 0
+DATA TRANSFORMATION IS MATCHED
+MERGED PATH 0 OF N2 IS MATCHED WITH PATH 26 OF N1
+
+For Path 27 ...THE CONDITION IS I-LocalValue>=0 THE DATA TRANSFORMATION IS 
+CustomScaling-1*MatA-1*MatB:=0, ConveyorB:=0,AutoProces:=0
+PATH 28 OF N2 IS MATCHED WITH PATH 27 OF N1
+
+**************************Verification Reports***************************************
+       <<<<<<<<<<<<< Number of PATHS in N1: 28 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+       <<<<<<<<<<<<< Number of PATHS in N2: 29 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+       <<<<<<<<<<<<< THE TWO MODELS N1 AND N2 ARE EQUIVALENT >>>>>>>>>>>>>>>>>
+  Time: 12.3 sec
+*************************************************************************************
