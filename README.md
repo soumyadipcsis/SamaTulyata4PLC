@@ -12,7 +12,8 @@ Tool demo is also available for a small bechmarks.
 The tool output for a smaple program gives exhaustive results for the --detail flag option.
 
 # Ecclipse plugin
- Earlier Ecclipse plugin version of SamaTulyata is also uploaded howeever, it works on C language.(ATVA 2017)
+ First version of PN based equivalence checker Ecclipse plugin version is also uploaded for further comparison if possible. 
+ However, it works on C language.(Published at ATVA 2017)
 
  
   
