@@ -10,7 +10,9 @@ In the benchmark file is  contains all tcl files for experimentation.
 All bechmarks are opensource benchmarks. 
 Tool demo is also available for a small bechmarks.
 The tool output for a smaple program gives exhaustive results for the --detail flag option.
-Overall verification time including tool initialization takes 10-20 sec for large benchmarks. 
+Overall verification time including tool initialization takes 10-20 sec for large benchmarks.
+On the other hand for small benchmarks its carried out within a second. 
+That is because during initialization of tool program is loaded. For large programs, seperate variable list file is generated and the tool takes ~1-2 sec of time for small program and for large program it takes ~10-15 sec of time. 
 
 # Ecclipse plugin
  First version of PN based equivalence checker Ecclipse plugin version is also uploaded for further comparison if possible. 
