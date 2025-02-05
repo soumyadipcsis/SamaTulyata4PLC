@@ -36,12 +36,6 @@ path 25 : < { t32 } >
 path 26 : < { t34 }, { t35 } >
 path 27 : < { t36 }, { t37 } >
 
-************************************************************************
-
-
-
-
-
 
 ********************** Finding all paths of model N2 *******************
 Finding Cut-points type=0: Out-ports type=1 : Inital Marking, 
@@ -100,7 +94,7 @@ PATH 1 OF N2 IS MATCHED WITH PATH 1 OF N1
 
 For Path 2 ...THE CONDITION IS Mode-0=0 THE DATA TRANSFORMATION IS 
 ClipButton:=0 + 1*id_ClipButton
-PATH 1 OF N2 IS MATCHED WITH PATH 1 OF N1
+PATH 2 OF N2 IS MATCHED WITH PATH 2 OF N1
 
 For Path 3 ...THE CONDITION IS Mode-0!=0 THE DATA TRANSFORMATION IS 
 --
