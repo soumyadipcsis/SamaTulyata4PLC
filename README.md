@@ -7,9 +7,9 @@
    
 # Experimentation
  For our experiemntation, we translate TCL code to Petri net and SFC to Petri net model. Our Equivalece checker 
- is Petri net based equivalence checker. SamaTulyata4PLC is integrated with the *CBM* tool. So the verification 
+ is Petri net based equivalence checker. *SamaTulyata4PLC* is integrated with the *CBM* tool. So the verification 
  time includes the *CBM* initial set up time. For each benchmark, the initial setup of the tool is performed.
- Overall verification time including OpenPLC/CBM initialization time which takes 10-20 sec for large benchmarks.
+ Overall verification time including *CBM* initialization time which takes 10-20 sec for large benchmarks.
  On the other hand, for small benchmarks its carried out within a second. One can experiment with the tool in isolation. 
  The overall verification time is in microseceond range. 
  
@@ -19,7 +19,9 @@
  version of tool which is integrated with  *CBM*.  
  
  # Benchmarks
- Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo.
+ Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
+ standerd industrial benchmarks.
+ 
     
 # Migration tool 
 TCL to SFC Migration is carried out propitory tool.
