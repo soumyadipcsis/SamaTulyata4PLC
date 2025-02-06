@@ -25,7 +25,7 @@ TCL to SFC Migration is carried out propitory tool.
 
 
 # Ecclipse plugin
- First version of PN based equivalence checker Ecclipse plugin version is also available (Published at ATVA 2017(SamaTulyata: An Efficient Path Based Equivalence Checking Tool,https://link.springer.com/chapter/10.1007/978-3-319-68167-2_8) for further comparison if possible. 
+ First version of PN based equivalence checker Ecclipse plugin version is also available (Published at [ATVA 2017](https://link.springer.com/chapter/10.1007/978-3-319-68167-2_8) for further comparison if possible. 
 However, it works on C language.
 
  
