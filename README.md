@@ -31,8 +31,8 @@ TCL to SFC Migration is carried out propitory tool.
 
 
 # Ecclipse plugin
- First version of *Petri net* based equivalence checker Ecclipse plugin version is also available Published at [ATVA 2017](https://link.springer.com/chapter/10.1007/978-3-319-68167-2_8) for further comparison. 
-However, it works on C language. The tool name is [SamaTulyata](https://github.com/santonus/equivchecker).
+ First version of *Petri net* based equivalence checker Ecclipse plugin version is also available [SamaTulyata](https://github.com/santonus/equivchecker) and Published at [ATVA 2017](https://link.springer.com/chapter/10.1007/978-3-319-68167-2_8) for further comparison. 
+However, it works on C language. 
 
  
   
