@@ -14,31 +14,32 @@
    
     # In each benchmark, the initial setup of the tool is performed.
     
-    # The benchmark file  contains all tcl files for experimentation.
+    # The benchmark file  contains all TCL files for experimentation.
     
     # All bechmarks are opensource benchmarks. 
     
-    # Tool demo is also available for a small bechmarks.
+    # Tool demo vedio is avaibale.
    
-    # The tool output for a smaple program gives exhaustive results for the --detail flag option.
+    # To get exhaustive tool output use --detail flag option.
+
+    # Run the tool use "python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>"
    
-    # Overall verification time including tool initialization takes 10-20 sec for large benchmarks.
-   
-    # On the other hand for small benchmarks its carried out within a second.
+    # Results: Overall verification time including tool initialization time which takes 10-20 sec for large benchmarks.
+      On the other hand for small benchmarks its carried out within a second.
     
-    # Reason: That is because during initialization of tool program is loaded. For large programs, seperate variable list file        is generated and the tool takes ~1-2 sec of time for small program and for large program it takes ~10-15 sec of time. 
+    # Reason: Variable creation table time at OpenPlC/ CBM which is one  of the input of equivalence checker.
    
-    # First version of Demo video is also uploaded. It is not integrated with propitory tool.
+    # In first version of Demo video which is uploaded, it is not integrated with OpenPLC/ CBM.
    
-    # All experimental time is taken with the version of tool which is integrated with propitory tool. 
+    # All experimental time is taken with the version of tool which is integrated with  OpenPLC/ CBM. 
    
-    # One can experiment the tool in isolation as an opensouce. However, the time calculation is missing in the code. one can         use time() for path Equivalence routine. 
+    # One can experiment the tool in isolation. The overall verification time is in microseceond range.
 
 
 
 # Ecclipse plugin
- First version of PN based equivalence checker Ecclipse plugin version is also uploaded for further comparison if possible. 
- However, it works on C language.(Published at ATVA 2017)
+ First version of PN based equivalence checker Ecclipse plugin version is also available (Published at ATVA 2017(SamaTulyata: An Efficient Path Based Equivalence Checking Tool,https://link.springer.com/chapter/10.1007/978-3-319-68167-2_8) for further comparison if possible. 
+However, it works on C language.
 
  
   
