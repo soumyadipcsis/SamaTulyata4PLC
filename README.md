@@ -1,7 +1,7 @@
 # SamaTulyata4PLC
  The tool is written in python. To run the tool use the following command
- `python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>`. To get exhaustive tool output use `--detail` flag option.
- It is an equivalence checker for verifying software migration for PLC programs. 
+ `python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>`. To get exhaustive tool output use 
+ `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
  The Equivalence checker works on one-safe *Petri net* based model.
  
    
