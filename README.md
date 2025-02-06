@@ -17,6 +17,8 @@
  The Tool demo video is also avaibale. In first line of experiment, the experimental time is taken with the 
  version of tool which is integrated with  OpenPLC/ CBM.  
  
+ # Benchmarks
+ Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo.
     
 # Migration tool 
 TCL to SFC Migration is carried out propitory tool.
