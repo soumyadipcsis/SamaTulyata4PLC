@@ -1,41 +1,26 @@
 # SamaTulyata4PLC
-
-    # The tool is written in python
+ The tool is written in python. To run the tool use the following command
+ "python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>". To get exhaustive tool output use "--detail" flag option.
+ It is an equivalence checker for verifying software migration for PLC programs. 
+ 
    
-    # Its is a verifier for PLC programs. It is also open source.
-   
-    # For our experiemntation, we translate TCL code to Petri net 
-      and SFC to Petri net 
+# Experimentation
+ For our experiemntation, we translate TCL code to Petri net and SFC to Petri net model. Our Equivalece checker 
+ is Petri net based equivalence checker. SamaTulyata4PLC is integrated with the OpenPLC/ CBM tool. So the verification 
+ time includes the OplenPLC/CBM initial set up time. For each benchmark, the initial setup of the tool is performed.
+ Overall verification time including OpenPLC/CBM initialization time which takes 10-20 sec for large benchmarks.
+ On the other hand, for small benchmarks its carried out within a second. One can experiment with the tool in isolation. 
+ The overall verification time is in microseceond range. 
+ 
+ In every initialization phase of CBM / OpenPLC variable creation table time is generated first  which is one  
+ of the input of equivalence checker. The benchmark file  contains all TCL files for experimentation.
+ The Tool demo video is also avaibale. In first line of experiment, the experimental time is taken with the 
+ version of tool which is integrated with  OpenPLC/ CBM.  
+ 
     
-    # Now the current version of SamaTulyata4PLC works on those generated Petri net 
+# Migration tool 
+TCL to SFC Migration is carried out propitory tool.
     
-    # TCL to SFC Migration is carried out propitory tool.
-    
-    # SamaTulyata4PLC integrated with the propitory tool. So the verification 
-      time includes the tool initial set up time.
-   
-    # In each benchmark, the initial setup of the tool is performed.
-    
-    # The benchmark file  contains all TCL files for experimentation.
-    
-    # All bechmarks are opensource benchmarks. 
-    
-    # Tool demo vedio is avaibale.
-   
-    # To get exhaustive tool output use --detail flag option.
-
-    # Run the tool use "python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>"
-   
-    # Results: Overall verification time including tool initialization time which takes 10-20 sec for large benchmarks.
-      On the other hand for small benchmarks its carried out within a second.
-    
-    # Reason: Variable creation table time at OpenPlC/ CBM which is one  of the input of equivalence checker.
-   
-    # In first version of Demo video which is uploaded, it is not integrated with OpenPLC/ CBM.
-   
-    # All experimental time is taken with the version of tool which is integrated with  OpenPLC/ CBM. 
-   
-    # One can experiment the tool in isolation. The overall verification time is in microseceond range.
 
 
 
