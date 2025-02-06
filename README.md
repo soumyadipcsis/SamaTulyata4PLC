@@ -14,8 +14,8 @@
  its carried out within a second. One can do experiment with the tool in isolation. 
  The overall verification time is in microseceond range. 
  
- In every initialization phase of *CBM* variable creation table time is generated first  which is one  
- of the input of equivalence checker. The benchmark file  contains all TCL files for experimentation.
+ In every initialization phase of *CBM* variable creation table time is generated first  
+ which is one of the input of equivalence checker. The benchmark file  contains all TCL files for experimentation.
  The Tool demo video is also avaibale. In first line of experiment, the experimental time is taken with the 
  version of tool which is integrated with  *CBM*.  
  
