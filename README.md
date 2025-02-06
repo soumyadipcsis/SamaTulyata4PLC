@@ -6,12 +6,13 @@
  
    
 # Experimentation
- For our experiemntation, we translate TCL code to Petri net and SFC to Petri net model. Our Equivalece checker 
- is Petri net based equivalence checker. *SamaTulyata4PLC* is integrated with the *CBM* tool. So the verification 
- time includes the *CBM* initial set up time. For each benchmark, the initial setup of the tool is performed.
- Overall verification time including *CBM* initialization time which takes 10-20 sec for large benchmarks.
- On the other hand, for small benchmarks its carried out within a second. 
- One can do experiment with the tool in isolation. The overall verification time is in microseceond range. 
+ For our experiemntation, we translate TCL code to Petri net and SFC to Petri net model. 
+ Our Equivalece checker is Petri net based equivalence checker. *SamaTulyata4PLC* is integrated 
+ with the *CBM* tool. So the verification time includes the *CBM* initial set up time. 
+ For each benchmark, the initial setup of the tool is performed. Overall verification time including *CBM* 
+ initialization time which takes 10-20 sec for large benchmarks. On the other hand, for small benchmarks 
+ its carried out within a second. One can do experiment with the tool in isolation. 
+ The overall verification time is in microseceond range. 
  
  In every initialization phase of *CBM* variable creation table time is generated first  which is one  
  of the input of equivalence checker. The benchmark file  contains all TCL files for experimentation.
