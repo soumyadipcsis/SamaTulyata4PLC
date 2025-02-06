@@ -4,7 +4,10 @@
  `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
  The Equivalence checker works on one-safe *Petri net* based model.
  
-   
+ # Benchmarks
+ Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
+ standerd industrial benchmarks.
+    
 # Experimentation
  For our experiemntation, we translate TCL code to Petri net and SFC to Petri net model. 
  Our Equivalece checker is Petri net based equivalence checker. *SamaTulyata4PLC* is integrated 
@@ -19,10 +22,7 @@
  is also avaibale. In first line of experiment, the experimental time is taken with the version of tool 
  which is integrated with  *CBM*.  
  
- # Benchmarks
- Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
- standerd industrial benchmarks.
- 
+
     
 # Migration tool 
 TCL to SFC Migration is carried out propitory tool.
