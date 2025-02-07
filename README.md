@@ -38,7 +38,8 @@ In future version our plan to integrate SMT solver instade of current Normalizer
 TCL to SFC Migration is carried out propitory tool.
     
 
-
+# Tool Demo Video
+ [Demo Video](https://youtu.be/adc4NG8LuoI)
 
 # Ecclipse plugin
  First version of *Petri net* based equivalence checker Ecclipse plugin version is also available [SamaTulyata](https://github.com/santonus/equivchecker) and Published at [ATVA 2017](https://link.springer.com/chapter/10.1007/978-3-319-68167-2_8) for further comparison. 
