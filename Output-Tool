@@ -1,3 +1,5 @@
+Detailed output :
+
 ********************** Finding all paths of model N1 ***************
 Finding Cut-points type=0: Out-ports type=1 : 
 Inital Marking, type=2: Backedge, type=3: Bifurcation
