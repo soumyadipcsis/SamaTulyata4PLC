@@ -2,8 +2,9 @@
  The tool is written in python. To run the tool use the following command
  `python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>`. To get exhaustive tool output use 
  `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
- The Equivalence checker works on one-safe *Petri net* based model.
-# Overallarchitecture
+ The Equivalence  checker works on one-safe *Petri net* based model.
+# Work Flow
+![work_Flow](https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/workFlow.jpg)
 
  # Benchmarks
  Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
