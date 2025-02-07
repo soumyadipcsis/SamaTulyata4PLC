@@ -11,7 +11,8 @@ N<sub>0</sub> and N<sub>1</sub>: Two Petri net models  <br>
 S<sub>0</sub>: Set of Paths for N<sub>0</sub>  <br>
 S<sub>1</sub>: Set of Paths for N<sub>1</sub>  <br>
 
-We used [Normalizer](https://ieeexplore.ieee.org/document/58767) for checking equivalence between two expressions.
+In current version we have used [Normalizer](https://ieeexplore.ieee.org/document/58767) for checking equivalence between two expressions.
+In future version our plan to integrate SMT solver instade of current Normalizer.
 
 # Benchmarks
  Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
