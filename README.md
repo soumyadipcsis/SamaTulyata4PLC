@@ -4,7 +4,7 @@
  `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
  The Equivalence  checker works on one-safe *Petri net* based model.
 # Work Flow
-![work_Flow](https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/workFlow.jpg)
+<img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/workFlow.jpg" width="50%">  
 N0 and N1 be two Petrinet models; S0be the set of paths from N0 and S1 be the set of paths from N1.
 
  # Benchmarks
