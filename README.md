@@ -5,9 +5,13 @@
  The Equivalence  checker works on one-safe *Petri net* based model.
 # Work Flow
 <img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/workFlow.jpg" width="50%">  
-N0 and N1 be two Petrinet models; S0be the set of paths from N0 and S1 be the set of paths from N1.
+P<sub>s</sub>: TCL Program
+P<sub>m</sub>: SFC Program
+N<sub>0</sub> and N<sub>1</sub>:  Two Petri net models
+S<sub>0</sub>: Set of Paths for N<sub>0</sub>
+S<sub>1</sub>: Set of Paths for N<sub>1</sub>:
 
- # Benchmarks
+# Benchmarks
  Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
  standerd industrial benchmarks.
     
