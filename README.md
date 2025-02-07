@@ -10,6 +10,7 @@ P<sub>m</sub>: SFC Program  <br>
 N<sub>0</sub> and N<sub>1</sub>: Two Petri net models  <br>
 S<sub>0</sub>: Set of Paths for N<sub>0</sub>  <br>
 S<sub>1</sub>: Set of Paths for N<sub>1</sub>  <br>
+We used [normalizer](https://ieeexplore.ieee.org/document/58767) for checking equivalence between two expressions.
 
 # Benchmarks
  Currently our benchmark directory contains 84 TCL code. 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
