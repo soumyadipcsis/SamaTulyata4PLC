@@ -25,3 +25,5 @@ proc f {11 12 h1 h2} {
     }
     set out [expr {$c + $y + $z}]
  }
+
+ (* Syntax for MOD300 (TCL 4.3 V) *) 
