@@ -1,0 +1,34 @@
+PROC PROGRAM0_VARIANT1;
+VAR
+    START : BOOL;
+    STOP : BOOL;
+    MASTERCOIL : BOOL;
+    CONVEYOR : BOOL;
+    LIGHTSOURCE : BOOL;
+    LDR : BOOL;
+    COILBITS : BOOL;
+    BLOWERS : BOOL;
+    TIMER : BOOL;
+    I, J : INTEGER;
+BEGIN
+STEP 'CONTROL_LOGIC'
+    MASTERCOIL := NOT(STOP) AND (MASTERCOIL OR START);
+    CONVEYOR := MASTERCOIL;
+    LIGHTSOURCE := MASTERCOIL;
+    FOR I := 0 TO 2 DO
+        FOR J := 0 TO 2 DO
+            COILBITS := NOT(TIMER) AND (COILBITS OR LDR);
+            IF COILBITS THEN
+                BLOWERS := MASTERCOIL;
+            ELSE
+                BLOWERS := FALSE;
+            END
+        END
+    END
+ENDSTEP
+END.
+
+
+
+
+
