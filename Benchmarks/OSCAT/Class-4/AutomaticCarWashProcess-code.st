@@ -1,4 +1,4 @@
-FUNCTION_BLOCK CarWashProcess  
+FUNCTION_BLOCK WashProcess  
 VAR_INPUT  
     MasterStart : BOOL;  
     CarDetection : BOOL;  
