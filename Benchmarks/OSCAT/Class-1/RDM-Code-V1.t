@@ -1,4 +1,4 @@
-FUNCTION_BLOCK RDM_INT
+PROC RDM_INT
   VAR_INPUT
     LAST : INT; // LAST must now be between 0 and 1000 to simulate "fraction" effect
   END_VAR
@@ -33,4 +33,4 @@ FUNCTION_BLOCK RDM_INT
   temp := tn MOD 10000; // keep within a smaller range
   _RDM := INT((temp * 2718) / 1000 * last_limited / 1000); // simulate: fract * e * LAST
 
-END_FUNCTION_BLOCK
+END
