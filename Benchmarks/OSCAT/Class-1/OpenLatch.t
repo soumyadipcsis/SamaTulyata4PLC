@@ -1,4 +1,4 @@
-PROGRAM program0
+PROC program0
   VAR_INPUT
     SW1 : BOOL;
     SW2 : BOOL;
