@@ -1,4 +1,4 @@
-PROC CONTROLSET3_V2_INT;
+PROC CONTROLSET;
 VAR
     // Control Variables
     SP : INT; // Setpoint
