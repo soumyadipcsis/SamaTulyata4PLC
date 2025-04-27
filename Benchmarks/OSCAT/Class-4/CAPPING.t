@@ -41,8 +41,19 @@ STEP 'FINALIZE_SHIFT'
     BitShiftRegister[0] := ControlRegister;  
 ENDSTEP  
 
+STEP 'ADDITIONAL_LOOP'
+    FOR i := 0 TO 15 DO
+        IF BitShiftRegister[i] THEN
+            BitShiftRegister[i] := FALSE;
+        ELSE
+            BitShiftRegister[i] := TRUE;
+        END_IF;
+    END_FOR;
+ENDSTEP  
+
 STEP 'CAPPING_MACHINE_CONTROL'
     IF BitShiftRegister[7] THEN CappingMachine := TRUE; ELSE CappingMachine := FALSE; END_IF;  
 ENDSTEP
 
 END
+//Convert array to scalar variables during running the modelconstructor
