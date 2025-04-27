@@ -41,7 +41,17 @@ BEGIN
         FOR j := 1 TO 4 DO
             FOR k := 1 TO 4 DO
                 FOR l := 1 TO 4 DO
-                    (* Perform some operation *)
+                    C := C + (x * LPH);
+                END_FOR;
+            END_FOR;
+        END_FOR;
+    END_FOR;
+
+      FOR i := 1 TO 10 DO
+        FOR j := 1 TO 10 DO
+            FOR k := 1 TO 10 DO
+                FOR l := 1 TO 10 DO
+                     Y := Y + (x * TR);
                 END_FOR;
             END_FOR;
         END_FOR;
@@ -52,17 +62,17 @@ BEGIN
         IF C > 5 THEN
             IF C > 2 THEN
                 IF C > 1 THEN
-                    (* Perform operation *)
+                   C := C + (x * TR);
                 ELSE
-                    (* Perform operation *)
+                 Y := Y + (x * LPH);
                 END_IF;
             ELSE
-                (* Perform operation *)
+               C := C + (x * TR);
             END_IF;
         ELSE
-            (* Perform operation *)
+          Y := Y + (x * LPH);
         END_IF;
     ELSE
-        (* Perform operation *)
+       C := C + (x * TR);
     END_IF;
 END
