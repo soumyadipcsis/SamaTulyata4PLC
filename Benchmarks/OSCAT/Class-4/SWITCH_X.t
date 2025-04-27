@@ -1,4 +1,4 @@
-PROC SWITCH_X
+PROC SWITCH_X;
 VAR_INPUT
     IN1 : BOOL;              (* Input 1 *)
     IN2 : BOOL;              (* Input 2 *)
