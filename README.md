@@ -1,5 +1,5 @@
 # NOTE For MODELs Reviewer
-It is a Petri net-based equivalence checker. Our Petri net model is a restricted CPN (Colored Petri Net) model with two properties: it is 1-safe and deterministic. Places are associated with sets of functions, and transitions are associated with guard conditions. By mistake in two places CPN is mentioned. Whenever a CPN model is mentioned, it refers to a model that satisfies these two properties.
+It is a Petri net-based equivalence checker. Our Petri net model is a restricted CPN (Colored Petri Net) model with two properties: it is 1-safe and deterministic. Places are associated with sets of functions, and transitions are associated with guard conditions. By mistake in two places CPN is mentioned. Whenever a CPN model is mentioned, it refers to a model that satisfies these two properties. In revised version we will modified for better readability.
 # SamaTulyata4PLC
  The tool is written in python. To run the tool use the following command
  `python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>`. To get exhaustive tool output use 
