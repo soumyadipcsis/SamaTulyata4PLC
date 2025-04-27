@@ -25,6 +25,14 @@ VAR
     edge : BOOL;   (* Edge detection flag *)
     tx : INT;      (* Time value tracking *)
     init : BOOL;   (* Initialization flag *)
+    data1 : INT;   (* Data variable 1 for parallel computation *)
+    data2 : INT;   (* Data variable 2 for parallel computation *)
+    data3 : INT;   (* Data variable 3 for parallel computation *)
+    data4 : INT;   (* Data variable 4 for parallel computation *)
+    data5 : INT;   (* Data variable 5 for parallel computation *)
+    data6 : INT;   (* Data variable 6 for parallel computation *)
+    data7 : INT;   (* Data variable 7 for parallel computation *)
+    data8 : INT;   (* Data variable 8 for parallel computation *)
 END_VAR
 
 BEGIN
@@ -141,4 +149,81 @@ STEP 'COMBINE_OUTPUT'
     QX := Q0 OR Q1 OR Q2 OR Q3;
 ENDSTEP
 
-END
+STEP 'DATA_PARALLEL_LOOP_1'
+    (* Parallel loop 1 for data computation *)
+    FOR i := 1 TO 8 DO
+        data1 := i * 2;  (* Simple computation for parallel data loop 1 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'DATA_PARALLEL_LOOP_2'
+    (* Parallel loop 2 for data computation *)
+    FOR i := 1 TO 8 DO
+        data2 := i * 3;  (* Simple computation for parallel data loop 2 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'DATA_PARALLEL_LOOP_3'
+    (* Parallel loop 3 for data computation *)
+    FOR i := 1 TO 8 DO
+        data3 := i * 4;  (* Simple computation for parallel data loop 3 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'DATA_PARALLEL_LOOP_4'
+    (* Parallel loop 4 for data computation *)
+    FOR i := 1 TO 8 DO
+        data4 := i * 5;  (* Simple computation for parallel data loop 4 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'DATA_PARALLEL_LOOP_5'
+    (* Parallel loop 5 for data computation *)
+    FOR i := 1 TO 8 DO
+        data5 := i * 6;  (* Simple computation for parallel data loop 5 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'DATA_PARALLEL_LOOP_6'
+    (* Parallel loop 6 for data computation *)
+    FOR i := 1 TO 8 DO
+        data6 := i * 7;  (* Simple computation for parallel data loop 6 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'DATA_PARALLEL_LOOP_7'
+    (* Parallel loop 7 for data computation *)
+    FOR i := 1 TO 8 DO
+        data7 := i * 8;  (* Simple computation for parallel data loop 7 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'DATA_PARALLEL_LOOP_8'
+    (* Parallel loop 8 for data computation *)
+    FOR i := 1 TO 8 DO
+        data8 := i * 9;  (* Simple computation for parallel data loop 8 *)
+    END_FOR;
+ENDSTEP
+
+STEP 'NESTED_LOOP_1'
+    (* 8-level nested loop *)
+    FOR i := 1 TO 4 DO
+        FOR j := 1 TO 4 DO
+            FOR k := 1 TO 4 DO
+                FOR l := 1 TO 4 DO
+                    FOR m := 1 TO 4 DO
+                        FOR n := 1 TO 4 DO
+                            FOR o := 1 TO 4 DO
+                                FOR p := 1 TO 4 DO
+                                    Q0 := Q0 AND IN0;  (* Example nested loop logic *)
+                                END_FOR;
+                            END_FOR;
+                        END_FOR;
+                    END_FOR;
+                END_FOR;
+            END_FOR;
+        END_FOR;
+    END_FOR;
+ENDSTEP
+
+END_PROC
