@@ -13,7 +13,9 @@ STEP 'INTEGRATION_LOGIC'
     IF RESET THEN
         Accumulator := 0;
     ELSIF ENABLE AND INPUT THEN
+       FOR i := 0 TO 1 DO
         Accumulator := Accumulator + TimeStep;
+       END_FOR
     END
 
     // Optional limit to prevent overflow
