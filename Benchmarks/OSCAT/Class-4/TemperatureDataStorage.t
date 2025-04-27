@@ -1,65 +1,86 @@
-FUNCTION_BLOCK TemperatureDataStorage  
-VAR_INPUT  
-    StartPB : BOOL; (* Start PB *)  
-    StopPB : BOOL; (* Stop PB *)  
-    TempInput1 : INT; (* Input from temperature transmitter 1 *)  
-    TempInput2 : INT; (* Input from temperature transmitter 2 *)  
-END_VAR  
-  
-VAR_OUTPUT  
-    MasterCoil : BOOL; (* Master coil *)  
-    Temp1InC : INT; (* Temperature 1 in Centigrade *)  
-    Temp2InC : INT; (* Temperature 2 in Centigrade *)  
-END_VAR  
-  
-VAR  
-    Timer : TON;  
-    TempRegister1 : INT;  
-    TempRegister2 : INT;  
-    UpdateTimer : BOOL;  
-END_VAR  
-  
-VAR  
-    TimerPreset : TIME := T#5s;  
-    TempReal1 : REAL;  
-    TempReal2 : REAL;  
-END_VAR  
-  
-BEGIN  
-    (* Master Coil Control *)  
-    IF StartPB AND NOT StopPB THEN  
-        MasterCoil := TRUE;  
-    ELSE  
-        MasterCoil := FALSE;  
-    END_IF;  
-  
-    (* Timer Control *)  
-    IF MasterCoil THEN  
-        Timer(IN := TRUE, PT := TimerPreset);  
-    ELSE  
-        Timer(IN := FALSE);  
-    END_IF;  
-  
-    (* Temperature Conversion *)  
-    TempRegister1 := TempInput1;  
-    TempRegister2 := TempInput2;  
-  
-    TempReal1 := TIME_TO_REAL(TempRegister1);  
-    TempReal2 := TIME_TO_REAL(TempRegister2);  
-  
-    Temp1InC := REAL_TO_INT(TempReal1 / 82.0);  
-    Temp2InC := REAL_TO_INT(TempReal2 / 82.0);  
-  
-    (* Update Display Every 5 seconds *)  
-    IF Timer.Q THEN  
-        UpdateTimer := TRUE;  
-        Timer(IN := FALSE);  
-    ELSE  
-        UpdateTimer := FALSE;  
-    END_IF;  
-  
-    IF UpdateTimer THEN  
-        Temp1InC := TempRegister1 / 82;  
-        Temp2InC := TempRegister2 / 82;  
-    END_IF;  
-END_FUNCTION_BLOCK  
+PROC TEMPERATURE_DATA_STORAGE
+VAR_INPUT
+    StartPB : BOOL;
+    StopPB : BOOL;
+    TempInput1 : INT;
+    TempInput2 : INT;
+END_VAR
+
+VAR_OUTPUT
+    MasterCoil : BOOL;
+    Temp1InC : INT;
+    Temp2InC : INT;
+END_VAR
+
+VAR
+    Timer_Q : BOOL;
+    Timer_ET : TIME;
+    TimerPreset : TIME := T#5s;
+    TimerStartTime : TIME;
+    TimerRunning : BOOL;
+    TempRegister1 : INT;
+    TempRegister2 : INT;
+    TempReal1 : REAL;
+    TempReal2 : REAL;
+    UpdateTimer : BOOL;
+    CurrentTime : TIME;
+END_VAR
+
+BEGIN
+
+STEP 'MASTER_COIL_CONTROL'
+    IF StartPB AND NOT StopPB THEN
+        MasterCoil := TRUE;
+    ELSE
+        MasterCoil := FALSE;
+    END
+ENDSTEP
+
+STEP 'TIMER_CONTROL'
+    IF MasterCoil THEN
+        IF NOT TimerRunning THEN
+            TimerStartTime := TIME(); (* get current system time *)
+            TimerRunning := TRUE;
+        END
+        CurrentTime := TIME();
+        Timer_ET := CurrentTime - TimerStartTime;
+        IF Timer_ET >= TimerPreset THEN
+            Timer_Q := TRUE;
+        ELSE
+            Timer_Q := FALSE;
+        END
+    ELSE
+        TimerRunning := FALSE;
+        Timer_ET := T#0s;
+        Timer_Q := FALSE;
+    END
+ENDSTEP
+
+STEP 'TEMP_CONVERSION'
+    TempRegister1 := TempInput1;
+    TempRegister2 := TempInput2;
+
+    TempReal1 := REAL(TempRegister1);
+    TempReal2 := REAL(TempRegister2);
+
+    Temp1InC := REAL_TO_INT(TempReal1 / 82.0);
+    Temp2InC := REAL_TO_INT(TempReal2 / 82.0);
+ENDSTEP
+
+STEP 'DISPLAY_UPDATE_CHECK'
+    IF Timer_Q THEN
+        UpdateTimer := TRUE;
+        TimerRunning := FALSE;
+    ELSE
+        UpdateTimer := FALSE;
+    END
+ENDSTEP
+
+STEP 'DISPLAY_UPDATE'
+    IF UpdateTimer THEN
+        Temp1InC := TempRegister1 / 82;
+        Temp2InC := TempRegister2 / 82;
+    END
+ENDSTEP
+
+END
