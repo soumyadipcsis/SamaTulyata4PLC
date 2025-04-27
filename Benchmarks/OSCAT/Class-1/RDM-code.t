@@ -1,4 +1,4 @@
-PROC RDM
+PROC RDM;
   VAR_INPUT
     LAST : INT;
   END_VAR
