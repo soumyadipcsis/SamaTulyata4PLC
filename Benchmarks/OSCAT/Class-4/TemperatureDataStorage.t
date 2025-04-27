@@ -1,29 +1,27 @@
 PROC TEMPERATURE_DATA_STORAGE;
 VAR_INPUT
-    StartPB : BOOL;
-    StopPB : BOOL;
-    TempInput1 : INT;
-    TempInput2 : INT;
+    StartPB : BOOL;           (* Start Push Button *)
+    StopPB : BOOL;            (* Stop Push Button *)
+    TempInput1 : INT;         (* Temperature Input 1 *)
+    TempInput2 : INT;         (* Temperature Input 2 *)
 END_VAR
 
 VAR_OUTPUT
-    MasterCoil : BOOL;
-    Temp1InC : INT;
-    Temp2InC : INT;
+    MasterCoil : BOOL;        (* Master Coil Output *)
+    Temp1InC : INT;           (* Temperature 1 in Celsius *)
+    Temp2InC : INT;           (* Temperature 2 in Celsius *)
 END_VAR
 
 VAR
-    Timer_Q : BOOL;
-    Timer_ET : TIME;
-    TimerPreset : TIME := T#5s;
-    TimerStartTime : TIME;
-    TimerRunning : BOOL;
-    TempRegister1 : INT;
-    TempRegister2 : INT;
-    TempReal1 : REAL;
-    TempReal2 : REAL;
-    UpdateTimer : BOOL;
-    CurrentTime : TIME;
+    Timer_Q : BOOL;           (* Timer Q Output *)
+    Timer_ET : INT;           (* Timer Elapsed Time in ms *)
+    TimerPreset : INT := 5000; (* Timer Preset (5s) in ms *)
+    TimerStartTime : INT;     (* Timer Start Time in ms *)
+    TimerRunning : BOOL;      (* Timer Running Flag *)
+    TempRegister1 : INT;      (* Temperature Register 1 *)
+    TempRegister2 : INT;      (* Temperature Register 2 *)
+    UpdateTimer : BOOL;       (* Update Timer Flag *)
+    CurrentTime : INT;        (* Current Time in ms *)
 END_VAR
 
 BEGIN
@@ -39,10 +37,10 @@ ENDSTEP
 STEP 'TIMER_CONTROL'
     IF MasterCoil THEN
         IF NOT TimerRunning THEN
-            TimerStartTime := TIME(); (* get current system time *)
+            TimerStartTime := CURRENT_TIME();  (* Start Timer *)
             TimerRunning := TRUE;
         END
-        CurrentTime := TIME();
+        CurrentTime := CURRENT_TIME();
         Timer_ET := CurrentTime - TimerStartTime;
         IF Timer_ET >= TimerPreset THEN
             Timer_Q := TRUE;
@@ -51,36 +49,45 @@ STEP 'TIMER_CONTROL'
         END
     ELSE
         TimerRunning := FALSE;
-        Timer_ET := T#0s;
+        Timer_ET := 0;
         Timer_Q := FALSE;
     END
 ENDSTEP
 
-STEP 'TEMP_CONVERSION'
-    TempRegister1 := TempInput1;
-    TempRegister2 := TempInput2;
+PARALLEL
+    FOR i := 1 TO 2 DO
+        STEP 'TEMP_CONVERSION'
+            IF i = 1 THEN
+                TempRegister1 := TempInput1;
+                TempReal1 := REAL(TempRegister1);
+                Temp1InC := REAL_TO_INT(TempReal1 / 82);
+            ELSE
+                TempRegister2 := TempInput2;
+                TempReal2 := REAL(TempRegister2);
+                Temp2InC := REAL_TO_INT(TempReal2 / 82);
+            END
+        ENDSTEP
+    END_FOR
+ENDPARALLEL
 
-    TempReal1 := REAL(TempRegister1);
-    TempReal2 := REAL(TempRegister2);
+PARALLEL
+    FOR j := 1 TO 2 DO
+        STEP 'DISPLAY_UPDATE_CHECK'
+            IF Timer_Q THEN
+                UpdateTimer := TRUE;
+                TimerRunning := FALSE;
+            ELSE
+                UpdateTimer := FALSE;
+            END
+        ENDSTEP
 
-    Temp1InC := REAL_TO_INT(TempReal1 / 82.0);
-    Temp2InC := REAL_TO_INT(TempReal2 / 82.0);
-ENDSTEP
-
-STEP 'DISPLAY_UPDATE_CHECK'
-    IF Timer_Q THEN
-        UpdateTimer := TRUE;
-        TimerRunning := FALSE;
-    ELSE
-        UpdateTimer := FALSE;
-    END
-ENDSTEP
-
-STEP 'DISPLAY_UPDATE'
-    IF UpdateTimer THEN
-        Temp1InC := TempRegister1 / 82;
-        Temp2InC := TempRegister2 / 82;
-    END
-ENDSTEP
+        STEP 'DISPLAY_UPDATE'
+            IF UpdateTimer THEN
+                Temp1InC := TempRegister1 / 82;
+                Temp2InC := TempRegister2 / 82;
+            END
+        ENDSTEP
+    END_FOR
+ENDPARALLEL
 
 END
