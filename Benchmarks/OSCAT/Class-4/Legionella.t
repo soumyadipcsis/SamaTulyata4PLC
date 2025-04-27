@@ -75,7 +75,7 @@ STEP 'INITIALIZE'
 ENDSTEP
 
 STEP 'OPERATION_LOOP_1'
-    (* Parallel Loop 1: Process temperature and hysteresis for valves 0 to 3 *)
+    (* Nested Loops for operation: Valve 0 to 3 *)
     X1(DTi := DT_IN);                   (* Input time processing for X1 *)
     IF X1.Q OR MANUAL OR X2.run THEN
         X3(in := TEMP_BOILER);           (* Hysteresis control for temperature *)
@@ -83,10 +83,30 @@ STEP 'OPERATION_LOOP_1'
         LOOP i := 0 TO 3 DO
             (* Process valves 0 to 3 *)
             CASE i OF
-                0: X2.in0 := X3.Q OR X3.win;
-                1: X2.in1 := TEMP_RETURN >= TEMP_SET;
-                2: X2.in2 := X2.in1;
-                3: X2.in3 := X2.in1;
+                0: 
+                    IF X3.Q THEN 
+                        X2.in0 := X3.Q; 
+                    ELSE
+                        X2.in0 := NOT X3.Q; 
+                    END_IF;
+                1: 
+                    IF TEMP_RETURN >= TEMP_SET THEN 
+                        X2.in1 := TRUE; 
+                    ELSE 
+                        X2.in1 := FALSE; 
+                    END_IF;
+                2: 
+                    IF X2.in1 THEN 
+                        X2.in2 := TRUE; 
+                    ELSE 
+                        X2.in2 := FALSE; 
+                    END_IF;
+                3: 
+                    IF X2.in2 THEN 
+                        X2.in3 := TRUE; 
+                    ELSE 
+                        X2.in3 := FALSE; 
+                    END_IF;
             END_CASE;
         END_LOOP;
     END
@@ -96,44 +116,125 @@ STEP 'OPERATION_LOOP_2'
     (* Parallel Loop 2: Process valves 4 to 7 and check temperature for heating *)
     IF X1.Q OR MANUAL OR X2.run THEN
         LOOP i := 4 TO 7 DO
-            (* Process valves 4 to 7 *)
+            (* Process valves 4 to 7 with nested IN THEN ELSE conditions *)
             CASE i OF
-                4: X2.in4 := X2.in1;
-                5: X2.in5 := X2.in1;
-                6: X2.in6 := X2.in1;
-                7: X2.in7 := X2.in1;
+                4: 
+                    IF X2.in1 THEN 
+                        X2.in4 := TRUE; 
+                    ELSE 
+                        X2.in4 := FALSE; 
+                    END_IF;
+                5: 
+                    IF X2.in4 THEN 
+                        X2.in5 := TRUE; 
+                    ELSE 
+                        X2.in5 := FALSE; 
+                    END_IF;
+                6: 
+                    IF X2.in5 THEN 
+                        X2.in6 := TRUE; 
+                    ELSE 
+                        X2.in6 := FALSE; 
+                    END_IF;
+                7: 
+                    IF X2.in6 THEN 
+                        X2.in7 := TRUE; 
+                    ELSE 
+                        X2.in7 := FALSE; 
+                    END_IF;
             END_CASE;
         END_LOOP;
     END
 ENDSTEP
 
 STEP 'OPERATION_LOOP_3'
-    (* Parallel Loop 3: Run pump and heat logic *)
+    (* Parallel Loop 3: Run pump and heat logic with 4-level nested loop *)
     IF X1.Q OR MANUAL OR X2.run THEN
-        LOOP i := 0 TO 1 DO
+        LOOP i := 0 TO 3 DO
             CASE i OF
-                0: RUN := X2.run;               (* Set the run status from sequence output *)
-                1: PUMP := X2.QX;               (* Control pump based on sequence output *)
+                0: 
+                    IF X2.run THEN 
+                        RUN := TRUE; 
+                    ELSE 
+                        RUN := FALSE; 
+                    END_IF;
+                1: 
+                    IF X2.run THEN 
+                        PUMP := X2.QX; 
+                    ELSE 
+                        PUMP := FALSE; 
+                    END_IF;
+                2: 
+                    IF X2.QX THEN 
+                        HEAT := TRUE; 
+                    ELSE 
+                        HEAT := FALSE; 
+                    END_IF;
+                3: 
+                    IF X2.QX AND X3.Q THEN 
+                        HEAT := FALSE; 
+                    ELSE 
+                        HEAT := TRUE; 
+                    END_IF;
             END_CASE;
         END_LOOP;
-        HEAT := NOT X3.Q AND X2.run;     (* Activate heat if no hysteresis and sequence is running *)
     END
 ENDSTEP
 
 STEP 'OPERATION_LOOP_4'
-    (* Parallel Loop 4: Control valves and final status updates *)
+    (* Parallel Loop 4: Control valves and final status updates with 8 levels of nesting *)
     IF X1.Q OR MANUAL OR X2.run THEN
         LOOP i := 0 TO 7 DO
-            (* Control valves 0 to 7 based on the sequence output *)
+            (* Control valves 0 to 7 based on the sequence output with 8-level nested logic *)
             CASE i OF
-                0: VALVE0 := X2.Q0;
-                1: VALVE1 := X2.Q1;
-                2: VALVE2 := X2.Q2;
-                3: VALVE3 := X2.Q3;
-                4: VALVE4 := X2.Q4;
-                5: VALVE5 := X2.Q5;
-                6: VALVE6 := X2.Q6;
-                7: VALVE7 := X2.Q7;
+                0: 
+                    IF X2.Q0 THEN 
+                        VALVE0 := TRUE; 
+                    ELSE 
+                        VALVE0 := FALSE; 
+                    END_IF;
+                1: 
+                    IF X2.Q1 THEN 
+                        VALVE1 := TRUE; 
+                    ELSE 
+                        VALVE1 := FALSE; 
+                    END_IF;
+                2: 
+                    IF X2.Q2 THEN 
+                        VALVE2 := TRUE; 
+                    ELSE 
+                        VALVE2 := FALSE; 
+                    END_IF;
+                3: 
+                    IF X2.Q3 THEN 
+                        VALVE3 := TRUE; 
+                    ELSE 
+                        VALVE3 := FALSE; 
+                    END_IF;
+                4: 
+                    IF X2.Q4 THEN 
+                        VALVE4 := TRUE; 
+                    ELSE 
+                        VALVE4 := FALSE; 
+                    END_IF;
+                5: 
+                    IF X2.Q5 THEN 
+                        VALVE5 := TRUE; 
+                    ELSE 
+                        VALVE5 := FALSE; 
+                    END_IF;
+                6: 
+                    IF X2.Q6 THEN 
+                        VALVE6 := TRUE; 
+                    ELSE 
+                        VALVE6 := FALSE; 
+                    END_IF;
+                7: 
+                    IF X2.Q7 THEN 
+                        VALVE7 := TRUE; 
+                    ELSE 
+                        VALVE7 := FALSE; 
+                    END_IF;
             END_CASE;
         END_LOOP;
         PUMP := X2.QX;                   (* Update pump status *)
