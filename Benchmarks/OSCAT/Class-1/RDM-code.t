@@ -1,4 +1,4 @@
-FUNCTION_BLOCK RDM
+PROC RDM
   VAR_INPUT
     LAST : INT;
   END_VAR
@@ -26,4 +26,4 @@ FUNCTION_BLOCK RDM
 
   (* From OSCAT Library, www.oscat.de *)
   (* T_PLC_MS required*)
-END_FUNCTION_BLOCK
+END
