@@ -55,23 +55,23 @@ STEP 'TIMER_CONTROL'
 ENDSTEP
 
 PARALLEL
-    FOR i := 1 TO 2 DO
+    FOR i := 1 TO 10 DO
         STEP 'TEMP_CONVERSION'
             IF i = 1 THEN
                 TempRegister1 := TempInput1;
-                TempReal1 := REAL(TempRegister1);
-                Temp1InC := REAL_TO_INT(TempReal1 / 82);
+                TempReal1 :=TempRegister1;
+                Temp1InC := TempReal1 / 82;
             ELSE
                 TempRegister2 := TempInput2;
-                TempReal2 := REAL(TempRegister2);
-                Temp2InC := REAL_TO_INT(TempReal2 / 82);
+                TempReal2 := TempRegister2;
+                Temp2InC := TempReal2 / 82;
             END
         ENDSTEP
     END_FOR
 ENDPARALLEL
 
 PARALLEL
-    FOR j := 1 TO 2 DO
+    FOR j := 1 TO 6 DO
         STEP 'DISPLAY_UPDATE_CHECK'
             IF Timer_Q THEN
                 UpdateTimer := TRUE;
