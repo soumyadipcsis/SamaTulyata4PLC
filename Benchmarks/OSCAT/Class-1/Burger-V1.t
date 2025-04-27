@@ -16,7 +16,7 @@ PROC program3;
   END_VAR
 
   MasterCoil := (NOT DeactivateSystem) AND (MasterCoil OR MasterSwitch);
-
+WHILE(1);
   IF MotionDetector THEN
     MotionCount := MotionCount + 1;
   ELSE
