@@ -1,80 +1,91 @@
-FUNCTION_BLOCK CappingProcess  
+PROC CAPPING_PROCESS;
 VAR_INPUT  
-    Start : BOOL; (* Start *)  
-    Stop : BOOL; (* Stop *)  
-    Proximity : BOOL; (* Proximity sensor *)  
+    Start : BOOL; (* Start input *)  
+    Stop : BOOL; (* Stop input *)  
+    Proximity : BOOL; (* Proximity sensor input *)  
 END_VAR  
   
 VAR_OUTPUT  
-    MasterCoil : BOOL; (* Master coil *)  
-    ConveyorMotor : BOOL; (* Conveyor motor *)  
-    CappingMachine : BOOL; (* Capping machine *)  
+    MasterCoil : BOOL; (* Master coil output *)  
+    ConveyorMotor : BOOL; (* Conveyor motor output *)  
+    CappingMachine : BOOL; (* Capping machine output *)  
 END_VAR  
   
 VAR  
-    Timer : TON;  
     BitShiftRegister : ARRAY[0..15] OF BOOL;  
     ControlRegister : BOOL;  
-    TimerPreset : TIME := T#1s;  
-    TimerBase : TIME := T#100ms;  
+    TimerPreset : INT := 1000; (* Timer preset in ticks *)
+    TimerBase : INT := 100; (* Timer base time in ticks *)
+    TimerCount : INT := 0; (* Timer count variable *)
+    i : INT; (* Loop variable for bit shift *)
+    j : INT; (* Second loop variable for parallel operation *)  
 END_VAR  
   
 BEGIN  
-    (* Master Coil Control *)  
+
+STEP 'MASTER_COIL_CONTROL'
+    (* Master Coil Control *)
     IF Start AND NOT Stop THEN  
         MasterCoil := TRUE;  
     ELSE  
         MasterCoil := FALSE;  
     END_IF;  
-  
-    (* Conveyor Motor Control *)  
-    IF MasterCoil THEN  
-        IF NOT Timer.Q THEN  
-            ConveyorMotor := TRUE;  
-        ELSE  
-            ConveyorMotor := FALSE;  
-        END_IF;  
+ENDSTEP
+
+STEP 'CONVEYOR_MOTOR_CONTROL'
+    (* Conveyor Motor Control *)
+    IF MasterCoil AND TimerCount < TimerPreset THEN  
+        ConveyorMotor := TRUE;  
     ELSE  
         ConveyorMotor := FALSE;  
     END_IF;  
-  
-    (* Timer Control *)  
-    IF MasterCoil THEN  
-        Timer(IN := NOT Timer.Q, PT := TimerPreset);  
+ENDSTEP
+
+STEP 'TIMER_CONTROL'
+    (* Timer Control without TON block, using manual timer count *)
+    IF MasterCoil AND TimerCount < TimerPreset THEN  
+        TimerCount := TimerCount + TimerBase;  
     ELSE  
-        Timer(IN := FALSE);  
+        TimerCount := 0;  
     END_IF;  
-  
-    (* Bit Shift Left Operation *)  
+ENDSTEP  
+
+STEP 'CONTROL_REGISTER_UPDATE'
+    (* Update Control Register based on proximity and conveyor motor status *)
     IF ConveyorMotor AND Proximity THEN  
         ControlRegister := TRUE;  
     ELSE  
         ControlRegister := FALSE;  
     END_IF;  
-  
-    IF ConveyorMotor THEN  
-        BitShiftRegister[15] := BitShiftRegister[14];  
-        BitShiftRegister[14] := BitShiftRegister[13];  
-        BitShiftRegister[13] := BitShiftRegister[12];  
-        BitShiftRegister[12] := BitShiftRegister[11];  
-        BitShiftRegister[11] := BitShiftRegister[10];  
-        BitShiftRegister[10] := BitShiftRegister[9];  
-        BitShiftRegister[9] := BitShiftRegister[8];  
-        BitShiftRegister[8] := BitShiftRegister[7];  
-        BitShiftRegister[7] := BitShiftRegister[6];  
-        BitShiftRegister[6] := BitShiftRegister[5];  
-        BitShiftRegister[5] := BitShiftRegister[4];  
-        BitShiftRegister[4] := BitShiftRegister[3];  
-        BitShiftRegister[3] := BitShiftRegister[2];  
-        BitShiftRegister[2] := BitShiftRegister[1];  
-        BitShiftRegister[1] := BitShiftRegister[0];  
-        BitShiftRegister[0] := ControlRegister;  
-    END_IF;  
-  
-    (* Capping Machine Control *)  
+ENDSTEP
+
+STEP 'BIT_SHIFT_OPERATION'
+    (* Data parallel loop 1: Update Bit Shift Register in parallel *)
+    FOR i := 15 TO 1 BY -1 DO
+        IF ConveyorMotor THEN  
+            BitShiftRegister[i] := BitShiftRegister[i - 1];  
+        END_IF;  
+    END_FOR  
+ENDSTEP  
+
+STEP 'BIT_SHIFT_FINALIZATION'
+    (* Data parallel loop 2: Finalize Bit Shift Register with control register *)
+    FOR j := 0 TO 15 DO
+        IF ConveyorMotor THEN  
+            IF j = 0 THEN
+                BitShiftRegister[0] := ControlRegister;  
+            END_IF;
+        END_IF;  
+    END_FOR  
+ENDSTEP  
+
+STEP 'CAPPING_MACHINE_CONTROL'
+    (* Capping Machine Control based on bit shift register *)
     IF BitShiftRegister[7] THEN  
         CappingMachine := TRUE;  
     ELSE  
         CappingMachine := FALSE;  
     END_IF;  
-END_FUNCTION_BLOCK  
+ENDSTEP
+
+END
