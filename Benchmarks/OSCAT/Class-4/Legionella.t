@@ -1,4 +1,4 @@
-PROC LEGIONELLA
+PROC LEGIONELLA;
 VAR_INPUT
     MANUAL : BOOL;
     TEMP_BOILER : INT;        (* Integer temperature for boiler *)
