@@ -1,132 +1,144 @@
-FUNCTION_BLOCK SEQUENCE_4
-  VAR_INPUT
-    IN0 : BOOL := TRUE;
-    IN1 : BOOL := TRUE;
-    IN2 : BOOL := TRUE;
-    IN3 : BOOL := TRUE;
-    START : BOOL;
-    RST : BOOL;
-    WAIT0 : TIME;
-    DELAY0 : TIME;
-    WAIT1 : TIME;
-    DELAY1 : TIME;
-    WAIT2 : TIME;
-    DELAY2 : TIME;
-    WAIT3 : TIME;
-    DELAY3 : TIME;
-    STOP_ON_ERROR : BOOL;
-  END_VAR
-  VAR_OUTPUT
-    Q0 : BOOL;
-    Q1 : BOOL;
-    Q2 : BOOL;
-    Q3 : BOOL;
-    QX : BOOL;
-    RUN : BOOL;
-    _STEP : INT := -1;
-    STATUS : BYTE;
-  END_VAR
-  VAR
-    last : TIME;
-    edge : BOOL;
-    tx : TIME;
-    init : BOOL;
-  END_VAR
+PROC SEQUENCE_4
+VAR_INPUT
+    IN0 : BOOL := TRUE;    (* Input 0 *)
+    IN1 : BOOL := TRUE;    (* Input 1 *)
+    IN2 : BOOL := TRUE;    (* Input 2 *)
+    IN3 : BOOL := TRUE;    (* Input 3 *)
+    START : BOOL;          (* Start input *)
+    RST : BOOL;            (* Reset input *)
+    STOP_ON_ERROR : BOOL;  (* Stop on error flag *)
+END_VAR
 
-  tx:= UDINT_TO_TIME(T_PLC_MS(en:=true));
+VAR_OUTPUT
+    Q0 : BOOL;   (* Output 0 *)
+    Q1 : BOOL;   (* Output 1 *)
+    Q2 : BOOL;   (* Output 2 *)
+    Q3 : BOOL;   (* Output 3 *)
+    QX : BOOL;   (* Combined output *)
+    RUN : BOOL;  (* Running status *)
+    _STEP : INT := -1;  (* Step tracking *)
+    STATUS : BYTE;      (* Status flag *)
+END_VAR
 
-  (* initialize on startup *)
-  IF NOT init THEN
-  	last := tx;
-  	init := TRUE;
-  	status := BYTE#110;
-  END_IF;
+VAR
+    last : INT;    (* Last time check, replaced TIME with INT *)
+    edge : BOOL;   (* Edge detection flag *)
+    tx : INT;      (* Time value tracking *)
+    init : BOOL;   (* Initialization flag *)
+END_VAR
 
-  (* asynchronous reset *)
-  IF rst THEN
-  	_step := -1;
-  	Q0 := FALSE;
-  	Q1 := FALSE;
-  	Q2 := FALSE;
-  	Q3 := FALSE;
-  	status := BYTE#110;
-  	run := FALSE;
+BEGIN
 
-  (* edge on start input restarts the sequencer *)
-  ELSIF start AND NOT edge THEN
-  	_step := 0;
-  	last := tx;
-  	status := BYTE#111;
-  	Q0 := FALSE;
-  	Q1 := FALSE;
-  	Q2 := FALSE;
-  	Q3 := FALSE;
-  	run := TRUE;
-  END_IF;
-  edge := start;
+STEP 'INITIALIZE'
+    (* Initialize on startup *)
+    IF NOT init THEN
+        last := tx;
+        init := TRUE;
+        STATUS := BYTE#110;  (* Default status *)
+    END
+ENDSTEP
 
-  (* check if stop on status is necessary *)
-  IF status > BYTE#0 AND status < BYTE#100 AND stop_on_error THEN RETURN; END_IF;
+STEP 'RESET'
+    (* Asynchronous reset logic *)
+    IF RST THEN
+        _STEP := -1;
+        Q0 := FALSE;
+        Q1 := FALSE;
+        Q2 := FALSE;
+        Q3 := FALSE;
+        STATUS := BYTE#110;  (* Reset status *)
+        RUN := FALSE;
+    END
+ENDSTEP
 
-  (* sequence is running *)
-  IF run AND _step = 0 THEN
-  	IF NOT q0 AND in0 AND tx - last <= wait0 THEN
-  		Q0 := TRUE;
-  		last := tx;
-  	ELSIF NOT q0 AND tx - last > wait0 THEN
-  		status := BYTE#1;
-  		run := FALSE;
-  	ELSIF q0 AND tx - last >= delay0 THEN
-  		_step := 1;
-  		last := tx;
-  	END_IF;
-  END_IF;
-  IF run AND _step = 1 THEN
-  	IF NOT q1 AND in1 AND tx - last <= DELAY0 THEN
-  		Q0 := FALSE;
-  		Q1 := TRUE;
-  		last := tx;
-  	ELSIF NOT q1 AND Tx - last > DELAY0 THEN
-  		status := BYTE#2;
-  		q0 := FALSE;
-  		run := FALSE;
-  	ELSIF q1 AND tx - last >= WAIT1 THEN
-  		_step := 2;
-  		last := tx;
-  	END_IF;
-  END_IF;
-  IF run AND _step = 2 THEN
-  	IF NOT q2 AND in2 AND tx - last <= DELAY1 THEN
-  		Q1 := FALSE;
-  		Q2 := TRUE;
-  		last := tx;
-  	ELSIF NOT q2 AND Tx - last > DELAY1 THEN
-  		status := BYTE#3;
-  		q1 := FALSE;
-  		run := FALSE;
-  	ELSIF q2 AND tx - last >= WAIT2 THEN
-  		_step := 3;
-  		last := tx;
-  	END_IF;
-  END_IF;
-  IF run AND _step = 3 THEN
-  	IF NOT q3 AND in3 AND tx - last <= DELAY2 THEN
-  		Q2 := FALSE;
-  		Q3 := TRUE;
-  		last := tx;
-  	ELSIF NOT q3 AND Tx - last > DELAY2 THEN
-  		status := BYTE#4;
-  		q2 := FALSE;
-  		run := FALSE;
-  	ELSIF q3 AND tx - last >= WAIT3 THEN
-  		_step := -1;
-  		q3 := FALSE;
-  		run := FALSE;
-  		status := BYTE#110;
-  	END_IF;
-  END_IF;
-  QX := q0 OR q1 OR q2 OR q3;
+STEP 'START_EDGE'
+    (* Edge detection for the start input *)
+    IF START AND NOT edge THEN
+        _STEP := 0;
+        last := tx;
+        STATUS := BYTE#111;  (* Start status *)
+        Q0 := FALSE;
+        Q1 := FALSE;
+        Q2 := FALSE;
+        Q3 := FALSE;
+        RUN := TRUE;
+    END
+    edge := START;
+ENDSTEP
 
-  (*From OSCAT Library, www.oscat.de *)
-  (* T_PLC_MS required *)
-END_FUNCTION_BLOCK
+STEP 'STOP_ON_ERROR'
+    (* Check if stop on error is necessary *)
+    IF STATUS > BYTE#0 AND STATUS < BYTE#100 AND STOP_ON_ERROR THEN
+        RETURN;
+    END
+ENDSTEP
+
+STEP 'SEQUENCE_RUNNING'
+    (* Main sequence logic *)
+    IF RUN AND _STEP = 0 THEN
+        IF NOT Q0 AND IN0 AND tx - last <= 0 THEN
+            Q0 := TRUE;
+            last := tx;
+        ELSIF NOT Q0 AND tx - last > 0 THEN
+            STATUS := BYTE#1;
+            RUN := FALSE;
+        ELSIF Q0 AND tx - last >= 0 THEN
+            _STEP := 1;
+            last := tx;
+        END
+    END
+
+    IF RUN AND _STEP = 1 THEN
+        IF NOT Q1 AND IN1 AND tx - last <= 0 THEN
+            Q0 := FALSE;
+            Q1 := TRUE;
+            last := tx;
+        ELSIF NOT Q1 AND tx - last > 0 THEN
+            STATUS := BYTE#2;
+            Q0 := FALSE;
+            RUN := FALSE;
+        ELSIF Q1 AND tx - last >= 0 THEN
+            _STEP := 2;
+            last := tx;
+        END
+    END
+
+    IF RUN AND _STEP = 2 THEN
+        IF NOT Q2 AND IN2 AND tx - last <= 0 THEN
+            Q1 := FALSE;
+            Q2 := TRUE;
+            last := tx;
+        ELSIF NOT Q2 AND tx - last > 0 THEN
+            STATUS := BYTE#3;
+            Q1 := FALSE;
+            RUN := FALSE;
+        ELSIF Q2 AND tx - last >= 0 THEN
+            _STEP := 3;
+            last := tx;
+        END
+    END
+
+    IF RUN AND _STEP = 3 THEN
+        IF NOT Q3 AND IN3 AND tx - last <= 0 THEN
+            Q2 := FALSE;
+            Q3 := TRUE;
+            last := tx;
+        ELSIF NOT Q3 AND tx - last > 0 THEN
+            STATUS := BYTE#4;
+            Q2 := FALSE;
+            RUN := FALSE;
+        ELSIF Q3 AND tx - last >= 0 THEN
+            _STEP := -1;
+            Q3 := FALSE;
+            RUN := FALSE;
+            STATUS := BYTE#110;  (* Reset status *)
+        END
+    END
+ENDSTEP
+
+STEP 'COMBINE_OUTPUT'
+    (* Combine outputs into QX *)
+    QX := Q0 OR Q1 OR Q2 OR Q3;
+ENDSTEP
+
+END
