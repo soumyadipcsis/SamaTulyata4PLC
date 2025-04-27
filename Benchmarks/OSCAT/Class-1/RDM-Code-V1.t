@@ -1,4 +1,4 @@
-PROC RDM_INT
+PROC RDM_INT;
   VAR_INPUT
     LAST : INT; // LAST must now be between 0 and 1000 to simulate "fraction" effect
   END_VAR
