@@ -1,4 +1,4 @@
-PROC TUNE
+PROC TUNE;
 VAR_INPUT
     SET : BOOL;            (* Start setting *)
     SU : BOOL;             (* Step up *)
