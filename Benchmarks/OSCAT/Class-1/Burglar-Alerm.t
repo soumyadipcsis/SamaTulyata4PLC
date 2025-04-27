@@ -1,4 +1,4 @@
-PROC program0
+PROC program0;
   VAR_INPUT
     MasterSwitch : BOOL;
     DeactivateSystem : BOOL;
@@ -15,4 +15,4 @@ PROC program0
   MasterCoil := NOT(DeactivateSystem) AND (MasterCoil OR MasterSwitch);
   AlarmCoil := (MotionDetector OR NOT(WindowSensor)) AND MasterCoil;
   Alarm := NOT(ButtonToStopAlarm) AND (Alarm OR AlarmCoil);
-END_PROGRAM
+END.
