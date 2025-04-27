@@ -10,4 +10,4 @@ PROC program0
 
   Latch := SW1;
   Unlatch := SW2;
-END_PROGRAM
+END
