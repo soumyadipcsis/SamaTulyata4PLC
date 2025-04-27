@@ -1,132 +1,154 @@
+PROC SWITCH_X
+VAR_INPUT
+    IN1 : BOOL;              (* Input 1 *)
+    IN2 : BOOL;              (* Input 2 *)
+    IN3 : BOOL;              (* Input 3 *)
+    IN4 : BOOL;              (* Input 4 *)
+    IN5 : BOOL;              (* Input 5 *)
+    IN6 : BOOL;              (* Input 6 *)
+    T_DEBOUNCE : TIME := t#50ms;  (* Debounce time *)
+END_VAR
 
-FUNCTION_BLOCK SWITCH_X
-  VAR_INPUT
-    IN1 : BOOL;
-    IN2 : BOOL;
-    IN3 : BOOL;
-    IN4 : BOOL;
-    IN5 : BOOL;
-    IN6 : BOOL;
-    T_DEBOUNCE : TIME := t#50ms;
-  END_VAR
-  VAR_OUTPUT
-    Q1 : BOOL;
-    Q2 : BOOL;
-    Q3 : BOOL;
-    Q4 : BOOL;
-    Q5 : BOOL;
-    Q6 : BOOL;
-    Q31 : BOOL;
-    Q41 : BOOL;
-    Q51 : BOOL;
-    Q61 : BOOL;
-    Q32 : BOOL;
-    Q42 : BOOL;
-    Q52 : BOOL;
-    Q62 : BOOL;
-  END_VAR
-  VAR
-    init : BOOL;
-    T1 : TOF;
-    T2 : TOF;
-    T3 : TOF;
-    T4 : TOF;
-    T5 : TOF;
-    T6 : TOF;
-    tx : TIME;
-    x1 : BOOL;
-    x2 : BOOL;
-    E1 : BOOL;
-    E2 : BOOL;
-  END_VAR
+VAR_OUTPUT
+    Q1 : BOOL;               (* Output 1 *)
+    Q2 : BOOL;               (* Output 2 *)
+    Q3 : BOOL;               (* Output 3 *)
+    Q4 : BOOL;               (* Output 4 *)
+    Q5 : BOOL;               (* Output 5 *)
+    Q6 : BOOL;               (* Output 6 *)
+    Q31 : BOOL;              (* Output 31 *)
+    Q41 : BOOL;              (* Output 41 *)
+    Q51 : BOOL;              (* Output 51 *)
+    Q61 : BOOL;              (* Output 61 *)
+    Q32 : BOOL;              (* Output 32 *)
+    Q42 : BOOL;              (* Output 42 *)
+    Q52 : BOOL;              (* Output 52 *)
+    Q62 : BOOL;              (* Output 62 *)
+END_VAR
 
-  (* initialize on startup *)
-  IF NOT init THEN
-  	init := TRUE;
-  	IF t_debounce < t#50ms THEN tx := t#50ms; ELSE tx := t_debounce; END_IF;
-  	T1(PT := Tx);
-  	T2(PT := Tx);
-  	T3(PT := Tx);
-  	T4(PT := Tx);
-  	T5(PT := Tx);
-  	T6(PT := Tx);
-  ELSE
-  	Q1 := FALSE;
-  	Q2 := FALSE;
-  	Q3 := FALSE;
-  	Q4 := FALSE;
-  	Q5 := FALSE;
-  	Q6 := FALSE;
-  	Q31 := FALSE;
-  	Q41 := FALSE;
-  	Q51 := FALSE;
-  	Q61 := FALSE;
-  	Q32 := FALSE;
-  	Q42 := FALSE;
-  	Q52 := FALSE;
-  	Q62 := FALSE;
-  END_IF;
+VAR
+    init : BOOL;             (* Initialization flag *)
+    T1 : TOF;                (* Timer for input IN1 *)
+    T2 : TOF;                (* Timer for input IN2 *)
+    T3 : TOF;                (* Timer for input IN3 *)
+    T4 : TOF;                (* Timer for input IN4 *)
+    T5 : TOF;                (* Timer for input IN5 *)
+    T6 : TOF;                (* Timer for input IN6 *)
+    tx : TIME;               (* Debounce time variable *)
+    x1 : BOOL;               (* Edge detection flag for IN1 *)
+    x2 : BOOL;               (* Edge detection flag for IN2 *)
+    E1 : BOOL;               (* State of IN1 edge detection *)
+    E2 : BOOL;               (* State of IN2 edge detection *)
+END_VAR
 
-  (* read inputs and debounce *)
-  	T1(IN := IN1);
-  	T2(IN := IN2);
-  	T3(IN := IN3);
-  	T4(IN := IN4);
-  	T5(IN := IN5);
-  	T6(IN := IN6);
+BEGIN
 
-  (* detect edge of IN1 and IN2 *)
-  IF t1.Q AND NOT E1 THEN X1 := TRUE; END_IF;
-  IF t2.Q AND NOT E2 THEN X2 := TRUE; END_IF;
+STEP 'INITIALIZE'
+    (* Initialize the function block on startup *)
+    IF NOT init THEN
+        init := TRUE;
+        IF T_DEBOUNCE < t#50ms THEN
+            tx := t#50ms;
+        ELSE
+            tx := T_DEBOUNCE;
+        END
+        T1(PT := tx);  (* Timer for IN1 *)
+        T2(PT := tx);  (* Timer for IN2 *)
+        T3(PT := tx);  (* Timer for IN3 *)
+        T4(PT := tx);  (* Timer for IN4 *)
+        T5(PT := tx);  (* Timer for IN5 *)
+        T6(PT := tx);  (* Timer for IN6 *)
+    ELSE
+        (* Reset output variables *)
+        Q1 := FALSE;
+        Q2 := FALSE;
+        Q3 := FALSE;
+        Q4 := FALSE;
+        Q5 := FALSE;
+        Q6 := FALSE;
+        Q31 := FALSE;
+        Q41 := FALSE;
+        Q51 := FALSE;
+        Q61 := FALSE;
+        Q32 := FALSE;
+        Q42 := FALSE;
+        Q52 := FALSE;
+        Q62 := FALSE;
+    END
+ENDSTEP
 
-  IF t1.Q THEN
-  	IF t3.q THEN
-  		q31 := TRUE;
-  		X1 := FALSE;
-  	ELSIF t4.q THEN
-  		q41 := TRUE;
-  		X1 := FALSE;
-  	ELSIF t5.q THEN
-  		q51 := TRUE;
-  		X1 := FALSE;
-  	ELSIF t6.q THEN
-  		q61 := TRUE;
-  		X1 := FALSE;
-  	END_IF;
-  ELSIF t2.Q THEN
-  	IF t3.q THEN
-  		q32 := TRUE;
-  		X2 := FALSE;
-  	ELSIF t4.q THEN
-  		q42 := TRUE;
-  		X2 := FALSE;
-  	ELSIF t5.q THEN
-  		q52 := TRUE;
-  		X2 := FALSE;
-  	ELSIF t6.q THEN
-  		q62 := TRUE;
-  		X2 := FALSE;
-  	END_IF;
-  (* in1 was active alone *)
-  ELSIF NOT T1.Q AND E1 AND X1 THEN
-  	Q1 := TRUE;
-  	X1 := FALSE;
-  ELSIF NOT T2.Q AND E2 AND X2 THEN
-  	Q2 := TRUE;
-  	X2 := FALSE;
-  ELSIF T3.Q THEN
-  	Q3 := TRUE;
-  ELSIF T4.Q THEN
-  	Q4 := TRUE;
-  ELSIF T5.Q THEN
-  	Q5 := TRUE;
-  ELSIF T6.Q THEN
-  	Q6 := TRUE;
-  END_IF;
+STEP 'DEBOUNCE_INPUTS'
+    (* Read inputs and debounce using timers *)
+    T1(IN := IN1);
+    T2(IN := IN2);
+    T3(IN := IN3);
+    T4(IN := IN4);
+    T5(IN := IN5);
+    T6(IN := IN6);
+ENDSTEP
 
-  (* save state of in1 and in2 *)
-  E1 := T1.Q;
-  E2 := T2.Q;
+STEP 'DETECT_EDGE_IN1'
+    (* Detect the rising edge of IN1 and IN2 *)
+    IF T1.Q AND NOT E1 THEN
+        x1 := TRUE;  (* Set x1 when IN1 rises *)
+    END
+    IF T2.Q AND NOT E2 THEN
+        x2 := TRUE;  (* Set x2 when IN2 rises *)
+    END
+ENDSTEP
 
-  (* From OSCAT LIBRARY, www.oscat.de *)
-END_FUNCTION_BLOCK
+STEP 'PROCESS_INPUTS'
+    (* Process inputs and set corresponding outputs based on timers *)
+    IF T1.Q THEN
+        IF T3.Q THEN
+            Q31 := TRUE;
+            x1 := FALSE;
+        ELSIF T4.Q THEN
+            Q41 := TRUE;
+            x1 := FALSE;
+        ELSIF T5.Q THEN
+            Q51 := TRUE;
+            x1 := FALSE;
+        ELSIF T6.Q THEN
+            Q61 := TRUE;
+            x1 := FALSE;
+        END
+    ELSIF T2.Q THEN
+        IF T3.Q THEN
+            Q32 := TRUE;
+            x2 := FALSE;
+        ELSIF T4.Q THEN
+            Q42 := TRUE;
+            x2 := FALSE;
+        ELSIF T5.Q THEN
+            Q52 := TRUE;
+            x2 := FALSE;
+        ELSIF T6.Q THEN
+            Q62 := TRUE;
+            x2 := FALSE;
+        END
+    (* If IN1 was active alone *)
+    ELSIF NOT T1.Q AND E1 AND x1 THEN
+        Q1 := TRUE;
+        x1 := FALSE;
+    ELSIF NOT T2.Q AND E2 AND x2 THEN
+        Q2 := TRUE;
+        x2 := FALSE;
+    ELSIF T3.Q THEN
+        Q3 := TRUE;
+    ELSIF T4.Q THEN
+        Q4 := TRUE;
+    ELSIF T5.Q THEN
+        Q5 := TRUE;
+    ELSIF T6.Q THEN
+        Q6 := TRUE;
+    END
+ENDSTEP
+
+STEP 'SAVE_EDGE_STATE'
+    (* Save the state of IN1 and IN2 for the next scan cycle *)
+    E1 := T1.Q;
+    E2 := T2.Q;
+ENDSTEP
+
+END
