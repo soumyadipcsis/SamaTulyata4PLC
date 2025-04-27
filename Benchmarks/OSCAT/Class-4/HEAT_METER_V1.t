@@ -37,9 +37,18 @@ BEGIN
         FOR j := 1 TO 4 DO
             FOR k := 1 TO 4 DO
                 FOR l := 1 TO 4 DO
-                    (* Perform some operation *)
+                    (* Perform some operation in the loop *)
+                    C := C + (x * LPH);  (* Example operation: accumulate heat consumption *)
                 END_FOR;
             END_FOR;
+        END_FOR;
+    END_FOR;
+
+    (* 4-level nested parallel loop (additional) *)
+    FOR i := 1 TO 4 DO
+        FOR j := 1 TO 4 DO
+            (* Parallel task, calculating and adding to C in parallel *)
+            C := C + (x * LPH);  (* Example of a parallel addition operation *)
         END_FOR;
     END_FOR;
 
@@ -48,17 +57,22 @@ BEGIN
         IF C > 5 THEN
             IF C > 2 THEN
                 IF C > 1 THEN
-                    (* Perform operation *)
+                    (* Perform operation when C is between 1 and 2 *)
+                    C := C + 1;
                 ELSE
-                    (* Perform operation *)
+                    (* Perform operation when C is between 0 and 1 *)
+                    C := C - 1;
                 END_IF;
             ELSE
-                (* Perform operation *)
+                (* Perform operation when C is between 0 and 5 *)
+                C := C + 2;
             END_IF;
         ELSE
-            (* Perform operation *)
+            (* Perform operation when C is less than 5 *)
+            C := C + 3;
         END_IF;
     ELSE
-        (* Perform operation *)
+        (* Perform operation when C is greater than or equal to 10 *)
+        C := C * 2;  (* Example operation: double the heat consumption *)
     END_IF;
 END
