@@ -1,9 +1,9 @@
 FUNCTION_BLOCK RDM
   VAR_INPUT
-    LAST : REAL;
+    LAST : INT;
   END_VAR
   VAR_OUTPUT
-    _RDM : REAL;
+    _RDM : INT;
     tn : DWORD;
     tc : INT;
   END_VAR
