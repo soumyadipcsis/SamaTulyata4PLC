@@ -46,3 +46,5 @@ STEP 'CAPPING_MACHINE_CONTROL'
 ENDSTEP
 
 END
+
+//Covert the all array variables to scalar form
