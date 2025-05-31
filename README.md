@@ -9,7 +9,7 @@ It is a Petri net-based equivalence checker. Our Petri net model is a restricted
 
 
 ### Running the Tool
- For Version 3. 
+ For Version 3:- \\
 To run the tool, use the following command:
 
 ```bash
