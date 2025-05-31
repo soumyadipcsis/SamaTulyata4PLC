@@ -1,70 +1,42 @@
-PROC FT_TN64_ADVANCED;
+PROC FT_TN64_V3;
 VAR
-    IN : REAL;
-    _T : TIME;
-    EN : BOOL;           // Enable sampling
-    MODE_AVG : BOOL;     // If TRUE, output average instead of delayed value
-
-    OUT : REAL;
+    IN : BOOL;
+    OUT1 : BOOL;
+    CNT : INT;
+    I : INT;
+    J : INT;
+    INIT : BOOL;
     TRIG : BOOL;
-
-    length : INT;        // Variable length (set externally, max 64)
-    X : ARRAY [0..63] OF REAL;
-    cnt : INT;
-    last : TIME;
-    tx : TIME;
-    init : BOOL;
-
-    i : INT;
-    sum : REAL;
-    sample_interval : TIME;
 BEGIN
-STEP 'ADVANCED_SHIFT_SAMPLE'
-
-// Current time in PLC ms
-tx := UDINT_TO_TIME(T_PLC_MS(en := TRUE));
-
-// Compute dynamic sampling interval
-IF length > 0 THEN
-    sample_interval := _T / length;
-ELSE
-    sample_interval := _T; // Fallback
-END_IF;
-
-// Initialize on first call
-IF NOT init THEN
-    X[cnt] := IN;
-    last := tx;
-    init := TRUE;
+STEP 'NESTED_LOOP_SAMPLE_V4'
+IF NOT INIT THEN
+    CNT := 0;
+    INIT := TRUE;
     TRIG := FALSE;
-    OUT := IN;
 ELSE
-    IF EN THEN
-        // If enough time has passed, advance buffer
-        IF (tx - last) >= sample_interval THEN
-            cnt := (cnt + 1) MOD length;
-            X[cnt] := IN;
-            last := tx;
-            TRIG := TRUE;
+    I := 0;
+    WHILE I < 2 DO
+        J := 0;
+        WHILE J < 2 DO
+            CNT := CNT + 1;
 
-            // Output mode: average or sampled value
-            IF MODE_AVG THEN
-                sum := 0.0;
-                FOR i := 0 TO length - 1 DO
-                    sum := sum + X[i];
-                END_FOR;
-                OUT := sum / length;
+            IF CNT >= 6 THEN
+                CNT := 0;
             ELSE
-                OUT := X[cnt];
-            END_IF;
+                CNT := CNT;
+            END
 
-        ELSE
-            TRIG := FALSE;
-        END_IF;
-    ELSE
-        TRIG := FALSE;
-    END_IF;
-END_IF;
+            IF CNT MOD 3 = 0 THEN
+                OUT1 := NOT IN;
+            ELSE
+                OUT1 := IN;
+            END
 
+            J := J + 1;
+        END_WHILE;
+        I := I + 1;
+    END_WHILE;
+    TRIG := TRUE;
+END
 ENDSTEP
 END.
