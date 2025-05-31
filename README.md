@@ -102,8 +102,11 @@ S<sub>1</sub>: Set of Paths for N<sub>1</sub>  <br>
 In current version we have used [Normalizer](https://ieeexplore.ieee.org/document/58767) for checking equivalence between two expressions.
 In future version our plan to integrate SMT solver instade of current Normalizer.
 # Tool Output
+ ##### For Version 2: For **a simple** program. 
+<img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/Report/result-Equivalencechecking.png" width="50%">
 
-For Version 3: For **Factorial** program. 
+ 
+ ##### For Version 3: For **Factorial** program. 
 <img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/Report/EqChk-Report-Factorial.jpeg" width="50%">
 
 # Benchmarks
