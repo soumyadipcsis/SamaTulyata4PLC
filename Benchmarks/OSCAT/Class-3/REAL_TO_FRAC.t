@@ -62,3 +62,4 @@ FUNCTION_BLOCK REAL_TO_FRAC
   (* from OSCAT library; www.oscat.de  *)
   (* user defined data type "FRACTION" required *)
 END_FUNCTION_BLOCK
+(* Not working for REAL*)
