@@ -1,33 +1,40 @@
-PROC FT_TN64_NOARRAY_DELAY;
+PROC FT_TN64_V1;
 VAR
-    IN : REAL;
-    _T : TIME;
-
-    OUT : REAL;
+    IN : BOOL;
+    OUT1 : BOOL;
+    CNT : INT;
+    I : INT;
+    J : INT;
+    INIT : BOOL;
     TRIG : BOOL;
-
-    last : TIME;
-    tx : TIME;
-    init : BOOL;
 BEGIN
-STEP 'DELAYED_SAMPLE_NO_ARRAY'
-
-tx := UDINT_TO_TIME(T_PLC_MS(en := TRUE));
-
-IF NOT init THEN
-    OUT := IN;
-    init := TRUE;
-    last := tx;
+STEP 'NESTED_LOOP_SAMPLE_V2'
+IF NOT INIT THEN
+    CNT := 0;
     TRIG := FALSE;
+    INIT := TRUE;
 ELSE
-    IF (tx - last) >= _T THEN
-        OUT := IN;
-        TRIG := TRUE;
-        last := tx;
-    ELSE
-        TRIG := FALSE;
-    END_IF;
-END_IF;
+    I := 0;
+    WHILE I < 2 DO
+        J := 0;
+        WHILE J < 3 DO
+            IF CNT = 3 THEN
+                CNT := 0;
+            ELSE
+                CNT := CNT + 1;
+            END
 
+            IF CNT = 1 THEN
+                OUT1 := IN;
+            ELSE
+                OUT1 := NOT IN;
+            END
+
+            J := J + 1;
+        END_WHILE;
+        I := I + 1;
+    END_WHILE;
+    TRIG := TRUE;
+END
 ENDSTEP
 END.
