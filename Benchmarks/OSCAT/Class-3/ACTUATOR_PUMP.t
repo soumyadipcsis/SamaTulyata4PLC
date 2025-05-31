@@ -1,58 +1,98 @@
-FUNCTION_BLOCK ACTUATOR_PUMP
-  VAR_INPUT
+PROC ACTUATOR_PUMP_VARIANT1;
+VAR_INPUT
     IN : BOOL;
     MANUAL : BOOL;
-    RST : BOOL := FALSE;
-    MIN_ONTIME : TIME := t#10s;
-    MIN_OFFTIME : TIME := t#10s;
-    RUN_EVERY : TIME := t#10000m;
-  END_VAR
-  VAR_OUTPUT
+    RST : BOOL;
+    MIN_ONTIME : INT;
+    MIN_OFFTIME : INT;
+    RUN_EVERY : INT;
+END_VAR
+VAR_OUTPUT
     PUMP : BOOL;
-    RUNTIME : UDINT;
-    CYCLES : UDINT;
-  END_VAR
-  VAR
-    tx : TIME;
-    last_change : TIME;
-    meter : ONTIME;
+    RUNTIME : INT;
+    CYCLES : INT;
+END_VAR
+VAR
+    tx : INT;
+    last_change : INT;
     old_man : BOOL;
     init : BOOL;
-  END_VAR
+    i, j, k, m, dummy1, dummy2 : INT;
+BEGIN
 
-  tx:= UDINT_TO_TIME(T_PLC_MS(en:=true));
+LOC=10
 
-  IF NOT init THEN
-  	init := TRUE;
-  	last_change := tx;
-  ELSIF rst THEN
-  	rst := FALSE;
-  	runtime := UDINT#0;
-  	cycles := UDINT#0;
-  ELSIF manual AND NOT pump AND NOT old_man THEN
-  	last_change := tx;
-  	pump := TRUE;
-  ELSIF NOT manual AND old_man AND pump AND NOT in THEN
-  	last_change := tx;
-  	pump := FALSE;
-  ELSIF in AND NOT pump AND tx - last_change >= min_offtime THEN
-  	last_change := tx;
-  	pump := TRUE;
-  ELSIF pump AND NOT in AND NOT manual AND tx - last_change >= min_ontime THEN
-  	last_change := tx;
-  	pump := FALSE;
-  ELSIF NOT pump AND (tx - last_change >= run_every) AND (run_every > T#0s) THEN
-  	last_change := tx;
-  	pump := TRUE;
-  END_IF;
+STEP 'DATA_INDEPENDENT_LOOP_1'
+    FOR k := 0 TO 4 DO
+        dummy1 := k * 2;
+    END_FOR
+ENDSTEP
 
-  meter(in := pump, SECONDS := runtime, CYCLES := cycles);
-  cycles := meter.CYCLES;
-  runtime := meter.SECONDS;
+STEP 'DATA_INDEPENDENT_LOOP_2'
+    FOR m := 1 TO 3 DO
+        dummy2 := m + 5;
+    END_FOR
+ENDSTEP
 
-  old_man := manual;
+STEP 'INIT_OR_RESET'
+    IF NOT init THEN
+        init := TRUE;
+        last_change := 0;
+        tx := 0;
+    END_IF;
 
-  (* From OSCAT Library, www.OSCAT.de *)
-  (* T_PLC_MS, ONTIME required *)
-END_FUNCTION_BLOCK
+    IF RST THEN
+        RST := FALSE;
+        RUNTIME := 0;
+        CYCLES := 0;
+        last_change := 0;
+        PUMP := FALSE;
+    END_IF;
+ENDSTEP
 
+STEP 'CONTROL_LOGIC_WITH_NESTED_LOOPS'
+    tx := tx + 1;
+
+    FOR i := 0 TO 1 DO
+        FOR j := 0 TO 2 DO
+            dummy1 := i * j;
+        END_FOR
+    END_FOR
+
+    IF MANUAL AND NOT PUMP THEN
+        last_change := tx;
+        PUMP := TRUE;
+    END_IF;
+
+    IF NOT MANUAL AND old_man AND PUMP AND NOT IN THEN
+        last_change := tx;
+        PUMP := FALSE;
+    END_IF;
+
+    IF IN AND NOT PUMP AND (tx - last_change) >= MIN_OFFTIME THEN
+        last_change := tx;
+        PUMP := TRUE;
+    END_IF;
+
+    IF PUMP AND NOT IN AND NOT MANUAL AND (tx - last_change) >= MIN_ONTIME THEN
+        last_change := tx;
+        PUMP := FALSE;
+    END_IF;
+
+    IF NOT PUMP AND ((tx - last_change) >= RUN_EVERY) AND (RUN_EVERY > 0) THEN
+        last_change := tx;
+        PUMP := TRUE;
+    END_IF;
+ENDSTEP
+
+STEP 'RUNTIME_AND_CYCLES'
+    IF PUMP THEN
+        RUNTIME := RUNTIME + 1;
+        IF (tx - last_change) = 1 THEN
+            CYCLES := CYCLES + 1;
+        END_IF;
+    END_IF;
+    old_man := MANUAL;
+ENDSTEP
+
+END
