@@ -7,17 +7,17 @@ VAR
     TRIG : BOOL;
 
     length : INT := 64;
-    X : ARRAY [0..63] OF REAL;
+    X : INT;
     cnt : INT;
     last : TIME;
     tx : TIME;
     init : BOOL;
-    sum : REAL;
+    sum : INTL;
     i : INT;
 BEGIN
 STEP 'CIRCULAR_AVG_SAMPLE'
 
-tx := UDINT_TO_TIME(T_PLC_MS(en := TRUE));
+
 
 IF NOT init THEN
     X[cnt] := IN;
@@ -32,9 +32,9 @@ ELSE
         last := tx;
         TRIG := TRUE;
 
-        sum := 0.0;
+        sum := 0;
         FOR i := 0 TO length - 1 DO
-            sum := sum + X[i];
+            sum := sum + X;
         END_FOR;
         OUT := sum / length;
     ELSE
