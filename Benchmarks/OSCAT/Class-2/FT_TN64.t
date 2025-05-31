@@ -1,4 +1,4 @@
-PROC FT_TN64_V1;
+PROC FT_TN64;
 VAR
     IN : BOOL;
     OUT1 : BOOL;
