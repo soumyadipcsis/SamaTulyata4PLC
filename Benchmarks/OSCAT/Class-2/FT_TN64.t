@@ -1,46 +1,42 @@
-PROC FT_TN64;
+PROC FT_TN64_V1;
 VAR
-    IN : REAL;
-    _T : TIME;
-
-    OUT : REAL;
+    IN : BOOL;
+    OUT1 : BOOL;
+    CNT : INT;
+    I : INT;
+    J : INT;
     TRIG : BOOL;
-
-    length : INT := 64;
-    X : ARRAY [0..63] OF REAL;
-    cnt : INT;
-    last : TIME;
-    tx : TIME;
-    init : BOOL;
+    INIT : BOOL;
 BEGIN
-STEP 'TIME_SHIFT_SAMPLE'
-
-// Get current time in ms
-tx := UDINT_TO_TIME(T_PLC_MS(en := TRUE));
-
-// First initialization
-IF NOT init THEN
-    X[cnt] := IN;
-    init := TRUE;
-    last := tx;
+STEP 'NESTED_LOOP_SAMPLE_V1'
+IF NOT INIT THEN
+    CNT := 0;
+    INIT := TRUE;
     TRIG := FALSE;
 ELSE
-    // Perform sampling every _T / length
-    IF (tx - last) >= (_T / length) THEN
-        IF cnt = (length - 1) THEN
-            cnt := 0;
-        ELSE
-            cnt := cnt + 1;
-        END_IF;
+    I := 0;
+    WHILE I < 3 DO
+        J := 0;
+        WHILE J < 2 DO
+            CNT := CNT + 1;
 
-        OUT := X[cnt];
-        X[cnt] := IN;
-        last := tx;
-        TRIG := TRUE;
-    ELSE
-        TRIG := FALSE;
-    END_IF;
-END_IF;
+            IF CNT > 5 THEN
+                CNT := 0;
+            ELSE
+                CNT := CNT;
+            END
 
+            IF CNT MOD 2 = 0 THEN
+                OUT1 := IN;
+            ELSE
+                OUT1 := NOT IN;
+            END
+
+            J := J + 1;
+        END_WHILE;
+        I := I + 1;
+    END_WHILE;
+    TRIG := TRUE;
+END
 ENDSTEP
 END.
