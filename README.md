@@ -20,10 +20,10 @@ python3 --version
  
 To run the tool, use the following command:
 
-bash
+```bash
 python3 SoftwareMigrationVerifier-V3.py
-
-## Input Format
+```
+### Input Format
 
 The input format used in the `main()` routine of `SoftwareMigrationVerifier-V3.py` is as follows for the **Factorial** program:
 
