@@ -4,8 +4,16 @@ It is a Petri net-based equivalence checker. Our Petri net model is a restricted
  The tool is written in python. To run the tool use the following command
  `python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>`. To get exhaustive tool output use 
  `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
- For Version 3. Run the tool using python3 SoftwareMigrationVerifier-V3.py
- The input format in main file is as follows for "Factorial program"
+ For Version 3. 
+# Software Migration Verifier
+
+## Running the Tool
+
+To run the tool, use the following command:
+
+```bash
+python3 SoftwareMigrationVerifier-V3.py
+
 
  
 
