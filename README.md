@@ -103,7 +103,7 @@ In current version we have used [Normalizer](https://ieeexplore.ieee.org/documen
 In future version our plan to integrate SMT solver instade of current Normalizer.
 # Tool Output
 
-<img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/Report/EqChk-Report-Factorial.jpeg" width="50%"
+<img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/Report/EqChk-Report-Factorial.jpeg" width="50%">
 # Benchmarks
  Currently our benchmark directory contains 84 TCL code (.t extension). 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
  standerd industrial benchmarks.
