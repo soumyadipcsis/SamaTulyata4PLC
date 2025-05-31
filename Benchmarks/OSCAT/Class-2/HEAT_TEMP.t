@@ -1,38 +1,48 @@
-FUNCTION_BLOCK HEAT_TEMP
-  VAR_INPUT
-    T_EXT : REAL;
-    T_INT : REAL;
-    OFFSET : REAL;
-    T_REQ : REAL;
-    TY_MAX : REAL := 70.0;
-    TY_MIN : REAL := 25.0;
-    TY_CONFIG : REAL := 70.0;
-    T_INT_CONFIG : REAL := 20.0;
-    T_EXT_CONFIG : REAL := -15.0;
-    T_DIFF : REAL := 10.0;
-    C : REAL := 1.33;
-    H : REAL := 3.0;
-  END_VAR
-  VAR_OUTPUT
-    TY : REAL;
+PROC HEAT_TEMP_V1_COMPLEX;
+VAR
+    T_INT : INT;
+    T_EXT : INT;
+    T_REQ : INT;
+    OFFSET : INT;
+    TY : INT;
     HEAT : BOOL;
-  END_VAR
-  VAR
-    tr : REAL;
-    tx : REAL;
-  END_VAR
 
-  tr := T_INT + OFFSET;
-  tx := (tr - T_EXT) / (T_INT_CONFIG - T_EXT_CONFIG);
+    TEMP1 : INT;
+    TEMP2 : INT;
+    I : INT;
+    J : INT;
+BEGIN
+STEP 'COMPLEX_WEIGHTED_THRESHOLD'
 
-  IF T_EXT + H > tr THEN
-  	TY := 0.0;
-  ELSE
-  	TY := LIMIT(TY_MIN, tr + T_DIFF * 0.5 * tx + (TY_CONFIG - T_DIFF * 0.5 - tr) * EXPT(tx, 1.0 / C), TY_MAX);
-  END_IF;
+TEMP1 := T_INT + OFFSET;
+TEMP2 := TEMP1 - T_EXT;
 
-  TY := MAX(TY, T_REQ);
-  HEAT := TY > 0.0;
+I := 0;
+WHILE I < 3 DO
+    J := 0;
+    WHILE J < 2 DO
+        IF TEMP2 > 10 THEN
+            TY := TEMP1 + 5;
+        ELSE
+            TY := TEMP1;
+        END
 
-  (* from OSCAT library www.oscat.de *)
-END_FUNCTION_BLOCK
+        IF TY < T_REQ THEN
+            HEAT := TRUE;
+        ELSE
+            HEAT := FALSE;
+        END
+
+        IF TY > 70 THEN
+            TY := 70;
+        ELSE
+            TY := TY;
+        END
+
+        J := J + 1;
+    END_WHILE;
+    I := I + 1;
+END_WHILE;
+
+ENDSTEP
+END.
