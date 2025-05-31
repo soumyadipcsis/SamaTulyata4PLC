@@ -1,7 +1,7 @@
 PROC FT_TN64_CIRCULAR_AVG;
 VAR
-    IN : REAL;
-    _T : TIME;
+    IN : INT;
+    _T : INT;
 
     OUT : REAL;
     TRIG : BOOL;
