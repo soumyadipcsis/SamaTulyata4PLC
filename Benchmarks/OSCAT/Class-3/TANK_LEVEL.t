@@ -1,62 +1,88 @@
-FUNCTION_BLOCK TANK_LEVEL
-  VAR_INPUT
-    LEVEL : BOOL;
-    LEAK : BOOL;
-    ACLR : BOOL;
-    MAX_VALVE_TIME : TIME;
-    LEVEL_DELAY_TIME : TIME;
-  END_VAR
-  VAR_OUTPUT
-    VALVE : BOOL;
-    ALARM : BOOL;
-    STATUS : BYTE;
-  END_VAR
-  VAR
-    cx : ACTUATOR_COIL;
-    tn : TON;
-    tl : TONOF;
-    open : BOOL;
-  END_VAR
+PROC TANK_LEVEL;
+VAR
+    LEVEL, LEAK, ACLR : BOOL;
+    MAX_VALVE_TIME, LEVEL_DELAY_TIME : INT;
+    VALVE, ALARM : BOOL;
+    STATUS : INT;
+    open, cx_in, cx_out, tn_in, tn_Q, tl_Q : BOOL;
+    tn_PT : INT;
+    i, j, k : INT;
+    sumLEVEL, sumSTATUS, tripleSum : INT;
+BEGIN
 
-  (* preprocess the level information *)
-  tl(in := level, T_ON := level_delay_time, T_OFF := level_delay_time);
-  open := tl.Q;
+// Data-independent loop 1: count odd numbers up to LEVEL_DELAY_TIME (demo: sumLEVEL)
+sumLEVEL := 0;
+FOR i := 1 TO LEVEL_DELAY_TIME DO
+    IF (i MOD 2 = 1) THEN
+        sumLEVEL := sumLEVEL + 1;
+    END_IF;
+END_FOR
 
-  (* start logic *)
-  IF ALARM THEN
-  	(* check for ACLR if ALARM is present *)
-  	IF ACLR THEN
-  		ALARM := FALSE;
-  		STATUS := BYTE#101; (* aclr pressed *)
-  		cx(in := FALSE);
-  	END_IF;
-  	RETURN;
-  ELSIF LEAK THEN
-  	(* leakeage detected *)
-  	cx(in := FALSE);
-  	ALARM := TRUE;
-  	STATUS := BYTE#1;	(* leakeage error *)
-  ELSIF open THEN
-  	(* valve needs to be opened because level is too low *)
-  	cx(in := TRUE);
-  	STATUS := BYTE#102; (* valve open by low level *)
-  ELSE
-  	(* valve needs to be closed *)
-  	cx(in := FALSE);
-  	STATUS := BYTE#100; (* valve idle *)
-  END_IF;
+// Data-independent loop 2: count even numbers up to MAX_VALVE_TIME (demo: sumSTATUS)
+sumSTATUS := 0;
+FOR j := 1 TO MAX_VALVE_TIME DO
+    IF (j MOD 2 = 0) THEN
+        sumSTATUS := sumSTATUS + 1;
+    END_IF;
+END_FOR
 
-  (* check if valve is open too long and generate alarm if necessary *)
-  tn(in := cx.out AND (MAX_VALVE_TIME > T#0s), PT := MAX_VALVE_TIME);
-  IF tn.Q THEN
-  	ALARM := TRUE;
-  	STATUS := BYTE#2; (* overtime error *)
-  	cx(in := FALSE);
-  END_IF;
+// 3-level nested loop: accumulate tripleSum for demonstration
+tripleSum := 0;
+FOR i := 1 TO 2 DO
+    FOR j := 1 TO 2 DO
+        FOR k := 1 TO 2 DO
+            tripleSum := tripleSum + (i + j + k);
+        END_FOR
+    END_FOR
+END_FOR
 
-  (* set output signal *)
-  VALVE := cx.out;
+// Preprocess the level information (simulate TONOF, no FB, just BOOL logic)
+IF LEVEL THEN
+    tl_Q := TRUE; // Simplified: when LEVEL is true, tl_Q is true
+ELSE
+    tl_Q := FALSE;
+END_IF;
+open := tl_Q;
 
-  (* From OSCAT Library, www.OSCAT.de *)
-  (* TON, TONOF, ACTUATOR_COIL required *)
-END_FUNCTION_BLOCK
+// Start logic
+IF ALARM THEN
+    IF ACLR THEN
+        ALARM := FALSE;
+        STATUS := 101;
+        cx_in := FALSE;
+    END_IF;
+    // RETURN
+ELSE
+    IF LEAK THEN
+        cx_in := FALSE;
+        ALARM := TRUE;
+        STATUS := 1;
+    ELSIF open THEN
+        cx_in := TRUE;
+        STATUS := 102;
+    ELSE
+        cx_in := FALSE;
+        STATUS := 100;
+    END_IF;
+END_IF;
+
+// Simulate TON logic for overtime alarm
+tn_in := cx_in AND (MAX_VALVE_TIME > 0);
+tn_PT := MAX_VALVE_TIME;
+IF tn_in AND (tn_PT > 0) THEN
+    tn_Q := TRUE;
+ELSE
+    tn_Q := FALSE;
+END_IF;
+
+IF tn_Q THEN
+    ALARM := TRUE;
+    STATUS := 2;
+    cx_in := FALSE;
+END_IF;
+
+// Simulated actuator coil output
+cx_out := cx_in;
+VALVE := cx_out;
+
+END.
