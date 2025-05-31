@@ -47,4 +47,5 @@ BEGIN
         (* Reset Timer *)  
         Timer(IN := FALSE);  
     END_IF;  
-END_FUNCTION_BLOCK  
+END_FUNCTION_BLOCK
+(* Not working for TOB*)
