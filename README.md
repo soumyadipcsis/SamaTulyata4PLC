@@ -5,9 +5,11 @@ It is a Petri net-based equivalence checker. Our Petri net model is a restricted
  `python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>`. To get exhaustive tool output use 
  `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
  For Version 3. Run the tool using python3 SoftwareMigrationVerifier-V3.py
- The input format in main file is 
- SFC: For factorial programs 
- steps1 = [
+ The input format in main file is as follows for "Factorial program"
+
+ 
+
+    SFC:  steps1 = [
         {"name": "Start", "function": "i := 1; fact := 1"},
         {"name": "Check", "function": ""},
         {"name": "Multiply", "function": "fact := fact * i"},
@@ -27,7 +29,7 @@ It is a Petri net-based equivalence checker. Our Petri net model is a restricted
         transitions=transitions1,
         initial_step="Start"
     )
-
+    
     and Petri net Generated from TCL2PN tool for factorial TCL code is 
 
     pn_NAIVE_PLACE = {
