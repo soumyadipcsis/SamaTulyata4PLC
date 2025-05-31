@@ -5,7 +5,7 @@ It is a Petri net-based equivalence checker. Our Petri net model is a restricted
  `python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>`. To get exhaustive tool output use 
  `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
  For Version 3. 
-# Software Migration Verifier
+
 
 ## Running the Tool
 
