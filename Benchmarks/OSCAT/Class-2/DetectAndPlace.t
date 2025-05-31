@@ -1,33 +1,40 @@
-PROGRAM program0
-  VAR_INPUT
-    Start : BOOL;
-    Stop : BOOL;
-  END_VAR
-  VAR_IN_OUT
-    MasterCoil : BOOL;
-  END_VAR
-  VAR_OUTPUT
-    Conveyor : BOOL;
-    LighSource : BOOL;
-  END_VAR
-  VAR_INPUT
+PROC PROGRAM0_VARIANT1;
+VAR
+    START : BOOL;
+    STOP : BOOL;
+    MASTERCOIL : BOOL;
+    CONVEYOR : BOOL;
+    LIGHTSOURCE : BOOL;
     LDR : BOOL;
-  END_VAR
-  VAR
-    CoilBits : BOOL;
-  END_VAR
-  VAR_OUTPUT
-    Blowers : BOOL;
-  END_VAR
-  VAR
-    Timer : BOOL;
-  END_VAR
+    COILBITS : BOOL;
+    BLOWERS : BOOL;
+    TIMER : BOOL;
+    I : INT;
+    J : INT;
+BEGIN
+STEP 'CONTROL_LOGIC'
+MASTERCOIL := NOT(STOP) AND (MASTERCOIL OR START);
+CONVEYOR := MASTERCOIL;
+LIGHTSOURCE := MASTERCOIL;
 
-  MasterCoil := NOT Stop AND (Start OR MasterCoil);
-  Conveyor := MasterCoil;
-  LighSource := NOT Stop AND MasterCoil;
-  CoilBits := (CoilBits OR LDR) AND NOT Timer;
-  CoilBits := (CoilBits OR LDR) AND NOT Timer;
-  Blowers := Timer AND CoilBits AND MasterCoil;
-  Blowers := Timer AND CoilBits AND MasterCoil;
-END_PROGRAM
+I := 0;
+WHILE I < 3 DO
+    J := 0;
+    WHILE J < 3 DO
+        COILBITS := (NOT TIMER) AND (COILBITS OR LDR);
+        IF COILBITS THEN
+            IF MASTERCOIL THEN
+                BLOWERS := TRUE;
+            ELSE
+                BLOWERS := FALSE;
+            END
+        ELSE
+            BLOWERS := FALSE;
+        END
+        J := J + 1;
+    END_WHILE;
+    I := I + 1;
+END_WHILE;
+
+ENDSTEP
+END.
