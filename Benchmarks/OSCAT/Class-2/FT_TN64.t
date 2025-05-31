@@ -1,37 +1,46 @@
-FUNCTION_BLOCK FT_TN64
-  VAR_INPUT
+PROC FT_TN64;
+VAR
     IN : REAL;
     _T : TIME;
-  END_VAR
-  VAR_OUTPUT
+
     OUT : REAL;
     TRIG : BOOL;
-  END_VAR
-  VAR
+
     length : INT := 64;
     X : ARRAY [0..63] OF REAL;
     cnt : INT;
     last : TIME;
     tx : TIME;
     init : BOOL;
-  END_VAR
+BEGIN
+STEP 'TIME_SHIFT_SAMPLE'
 
-  tx:= UDINT_TO_TIME(T_PLC_MS(en:=true));
+// Get current time in ms
+tx := UDINT_TO_TIME(T_PLC_MS(en := TRUE));
 
-  trig := FALSE;
-  IF NOT init THEN
-  	x[cnt] := in;
-  	init := TRUE;
-  	last := tx;
-  ELSIF tx - last >= _T / length THEN
-  	IF cnt = length - 1 THEN cnt := 0; ELSE cnt := cnt + 1; END_IF;
-  	Out := X[cnt];
-  	x[cnt] := in;
-  	last := tx;
-  	trig := TRUE;
-  END_IF;
+// First initialization
+IF NOT init THEN
+    X[cnt] := IN;
+    init := TRUE;
+    last := tx;
+    TRIG := FALSE;
+ELSE
+    // Perform sampling every _T / length
+    IF (tx - last) >= (_T / length) THEN
+        IF cnt = (length - 1) THEN
+            cnt := 0;
+        ELSE
+            cnt := cnt + 1;
+        END_IF;
 
+        OUT := X[cnt];
+        X[cnt] := IN;
+        last := tx;
+        TRIG := TRUE;
+    ELSE
+        TRIG := FALSE;
+    END_IF;
+END_IF;
 
-  (* From OSCAT Library, www.oscat.de *)
-  (* T_PLC_MS required *)
-END_FUNCTION_BLOCK
+ENDSTEP
+END.
