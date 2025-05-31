@@ -3,7 +3,10 @@ It is a Petri net-based equivalence checker. Our Petri net model is a restricted
 # SamaTulyata4PLC
 **SamaTulyata4PLC** is an equivalence checking tool written in Python for verifying software migration of Programmable Logic Controller (PLC) programs. It checks whether the migrated implementation behaves identically to the original using one-safe **Petri net** semantics.
  To run the tool use the following command
- ```python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>```. To get exhaustive tool output use 
+ 
+ ```python main.py <TCL_FILE_NAME> <SFC_FILE_NAME>```.
+ 
+ To get exhaustive tool output use 
  `--detail` flag option. It is an equivalence checker for verifying software migration for PLC programs. 
 
 
