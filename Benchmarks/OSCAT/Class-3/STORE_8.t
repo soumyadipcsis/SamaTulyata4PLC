@@ -1,63 +1,57 @@
-FUNCTION_BLOCK STORE_8
-  VAR_INPUT
-    SET : BOOL;
-    D0 : BOOL;
-    D1 : BOOL;
-    D2 : BOOL;
-    D3 : BOOL;
-    D4 : BOOL;
-    D5 : BOOL;
-    D6 : BOOL;
-    D7 : BOOL;
-    CLR : BOOL;
-    RST : BOOL;
-  END_VAR
-  VAR_OUTPUT
-    Q0 : BOOL;
-    Q1 : BOOL;
-    Q2 : BOOL;
-    Q3 : BOOL;
-    Q4 : BOOL;
-    Q5 : BOOL;
-    Q6 : BOOL;
-    Q7 : BOOL;
-  END_VAR
-  VAR
+PROC STORE_8_PROC_INT_BOOL_2LEVEL_NESTED_LOOP;
+VAR
+    SET, D0, D1, D2, D3, D4, D5, D6, D7, CLR, RST : BOOL;
+    Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7 : BOOL;
     edge : BOOL;
-  END_VAR
+    sumD, sumQ, i, j : INT;
+BEGIN
 
-  IF rst OR set THEN
-  	q0 := NOT rst;
-  	q1 := q0;
-  	q2 := q0;
-  	q3 := q0;
-  	q4 := q0;
-  	q5 := q0;
-  	q6 := q0;
-  	q7 := q0;
-  ELSE
-  	IF D0 THEN Q0 := TRUE; END_IF;
-  	IF D1 THEN Q1 := TRUE; END_IF;
-  	IF D2 THEN Q2 := TRUE; END_IF;
-  	IF D3 THEN Q3 := TRUE; END_IF;
-  	IF D4 THEN Q4 := TRUE; END_IF;
-  	IF D5 THEN Q5 := TRUE; END_IF;
-  	IF D6 THEN Q6 := TRUE; END_IF;
-  	IF D7 THEN Q7 := TRUE; END_IF;
+// 2-level nested loop: simulate some data-independent computation
+sumD := 0;
+FOR i := 0 TO 1 DO
+    FOR j := 0 TO 3 DO
+        sumD := sumD + (i + j);
+    END_FOR
+END_FOR
 
-  	IF clr AND NOT edge THEN
-  		IF q0 THEN q0 := FALSE;
-  		ELSIF q1 THEN q1 := FALSE;
-  		ELSIF q2 THEN q2 := FALSE;
-  		ELSIF q3 THEN q3 := FALSE;
-  		ELSIF q4 THEN q4 := FALSE;
-  		ELSIF q5 THEN q5 := FALSE;
-  		ELSIF q6 THEN q6 := FALSE;
-  		ELSE q7 := FALSE;
-  		END_IF;
-  	END_IF;
-  	edge := clr;
-  END_IF;
+sumQ := 0;
+FOR i := 0 TO 1 DO
+    FOR j := 0 TO 3 DO
+        sumQ := sumQ + (i * j);
+    END_FOR
+END_FOR
 
-  (*From OSCAT Library, www.oscat.de *)
-END_FUNCTION_BLOCK
+IF RST OR SET THEN
+    Q0 := NOT RST;
+    Q1 := Q0;
+    Q2 := Q0;
+    Q3 := Q0;
+    Q4 := Q0;
+    Q5 := Q0;
+    Q6 := Q0;
+    Q7 := Q0;
+ELSE
+    IF D0 THEN Q0 := TRUE; END_IF;
+    IF D1 THEN Q1 := TRUE; END_IF;
+    IF D2 THEN Q2 := TRUE; END_IF;
+    IF D3 THEN Q3 := TRUE; END_IF;
+    IF D4 THEN Q4 := TRUE; END_IF;
+    IF D5 THEN Q5 := TRUE; END_IF;
+    IF D6 THEN Q6 := TRUE; END_IF;
+    IF D7 THEN Q7 := TRUE; END_IF;
+
+    IF CLR AND NOT edge THEN
+        IF Q0 THEN Q0 := FALSE;
+        ELSIF Q1 THEN Q1 := FALSE;
+        ELSIF Q2 THEN Q2 := FALSE;
+        ELSIF Q3 THEN Q3 := FALSE;
+        ELSIF Q4 THEN Q4 := FALSE;
+        ELSIF Q5 THEN Q5 := FALSE;
+        ELSIF Q6 THEN Q6 := FALSE;
+        ELSE Q7 := FALSE;
+        END_IF;
+    END_IF;
+    edge := CLR;
+END_IF;
+
+END.
