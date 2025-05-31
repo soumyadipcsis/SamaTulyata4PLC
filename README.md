@@ -86,7 +86,7 @@ The input format used in the `main()` routine of `SoftwareMigrationVerifier-V3.p
         ],
         "initial_marking": ["Init"]
         
- The Equivalence  checker works on one-safe *Petri net* based model
+ The Equivalence  checker works on one-safe and deterministic *Petri net* based model
 
 # Work Flow
 <img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/workFlow.jpg" width="50%">  
