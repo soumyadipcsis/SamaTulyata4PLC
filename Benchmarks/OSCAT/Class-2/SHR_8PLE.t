@@ -1,46 +1,119 @@
-FUNCTION_BLOCK SHR_8PLE
-  VAR_INPUT
+PROC SHR_8PLE_SIM;
+VAR
     DIN : BOOL;
-    DLOAD : BYTE;
+    DLOAD : INT;    // simulate BYTE (8 bits)
     CLK : BOOL;
-    UP : BOOL := TRUE;
+    UP : BOOL;
     LOAD : BOOL;
     RST : BOOL;
-  END_VAR
-  VAR_OUTPUT
+
     DOUT : BOOL;
-  END_VAR
-  VAR
-    edge : BOOL := TRUE;
-    register : BYTE;
-  END_VAR
 
-  IF CLK AND edge AND NOT rst THEN
-  	edge := FALSE;	(* flanke wurde erkannt und weitere flankenerkennung wird verhindert bis edge wieder true ist *)
-  	(* hier ist der code für das flankenevent *)
-  	IF UP THEN						(*shift up *)
-  		register := SHL(register,1);
-          register := BIT_LOAD_B(register,Din,0);  (* register.X0 := Din; *)
-          Dout     := BIT_OF_DWORD(BYTE_TO_DWORD(register),7);     (* Dout := register.X7; *)
-  	ELSE						    (* shift down *)
-  		register := SHR(register,1);
-          register := BIT_LOAD_B(register,Din,7);  (* register.X7 := Din; *)
-          Dout     := BIT_OF_DWORD(BYTE_TO_DWORD(register),0);     (* Dout := register.X0; *)
-  	END_IF;
-  	IF load THEN							(* the byte on Din will be loaded if load = true *)
-  		register := Dload;
-  		IF up THEN
-              Dout := BIT_OF_DWORD(BYTE_TO_DWORD(register),7); (* register.X7 *)
-          ELSE
-              Dout := BIT_OF_DWORD(BYTE_TO_DWORD(register),0); (* register.X0 *)
-          END_IF;
-  	END_IF;
-  END_IF;
-  IF NOT clk THEN edge := TRUE; END_IF;	(* sobald clk wieder low wird warten auf nächste flanke *)
-  IF rst THEN									(* wenn reset aktiv dann ausgang rücksetzen *)
-  	register := BYTE#0;
-  	Dout := FALSE;
-  END_IF;
+    edge : BOOL;
+    register : INT;  // 8-bit register (0..7 bits used)
+    tempReg : INT;
+    I : INT;
+    J : INT;
+    bitVal : BOOL;
+BEGIN
+STEP 'SHR_8PLE_WITH_LOOP'
 
-  (*From OSCAT Library, www.oscat.de *)
-END_FUNCTION_BLOCK
+// On rising edge of CLK and not reset
+IF CLK AND edge AND NOT RST THEN
+    edge := FALSE;
+
+    // Prepare temp register for shift operations
+    tempReg := 0;
+
+    IF UP THEN
+        // Shift left bit by bit using nested loops
+        FOR I := 7 TO 1 BY -1 DO
+            FOR J := I TO I DO  // Single iteration loop for demo complexity
+                // Copy bit I-1 to bit I of tempReg
+                IF (register AND (1 << (I-1))) > 0 THEN
+                    tempReg := tempReg OR (1 << I);
+                ELSE
+                    tempReg := tempReg AND NOT (1 << I);
+                END
+            END
+        END
+
+        // Insert DIN at bit 0
+        IF DIN THEN
+            tempReg := tempReg OR 1;
+        ELSE
+            tempReg := tempReg AND NOT 1;
+        END
+
+        register := tempReg;
+
+        // DOUT := bit 7
+        IF (register AND 128) > 0 THEN
+            DOUT := TRUE;
+        ELSE
+            DOUT := FALSE;
+        END
+
+    ELSE
+        // Shift right bit by bit using nested loops
+        FOR I := 0 TO 6 DO
+            FOR J := I TO I DO  // Single iteration nested loop for complexity
+                // Copy bit I+1 to bit I of tempReg
+                IF (register AND (1 << (I+1))) > 0 THEN
+                    tempReg := tempReg OR (1 << I);
+                ELSE
+                    tempReg := tempReg AND NOT (1 << I);
+                END
+            END
+        END
+
+        // Insert DIN at bit 7
+        IF DIN THEN
+            tempReg := tempReg OR 128;
+        ELSE
+            tempReg := tempReg AND NOT 128;
+        END
+
+        register := tempReg;
+
+        // DOUT := bit 0
+        IF (register AND 1) > 0 THEN
+            DOUT := TRUE;
+        ELSE
+            DOUT := FALSE;
+        END
+    END_IF;
+
+    // Load operation
+    IF LOAD THEN
+        register := DLOAD AND 255;
+
+        IF UP THEN
+            IF (register AND 128) > 0 THEN
+                DOUT := TRUE;
+            ELSE
+                DOUT := FALSE;
+            END
+        ELSE
+            IF (register AND 1) > 0 THEN
+                DOUT := TRUE;
+            ELSE
+                DOUT := FALSE;
+            END
+        END_IF;
+    END_IF;
+END_IF;
+
+// Reset edge flag when CLK is low
+IF NOT CLK THEN
+    edge := TRUE;
+END_IF;
+
+// Reset logic
+IF RST THEN
+    register := 0;
+    DOUT := FALSE;
+END_IF;
+
+ENDSTEP
+END.
