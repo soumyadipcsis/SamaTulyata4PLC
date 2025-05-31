@@ -1,46 +1,49 @@
-PROC FT_TN64_CIRCULAR_AVG;
+PROC FT_TN64_V2;
 VAR
-    IN : INT;
-    _T : INT;
-
-    OUT : REAL;
+    IN : BOOL;
+    OUT1 : BOOL;
+    CNT : INT;
+    DIR : BOOL;
+    I : INT;
+    J : INT;
+    INIT : BOOL;
     TRIG : BOOL;
-
-    length : INT := 64;
-    X : INT;
-    cnt : INT;
-    last : TIME;
-    tx : TIME;
-    init : BOOL;
-    sum : INTL;
-    i : INT;
 BEGIN
-STEP 'CIRCULAR_AVG_SAMPLE'
-
-
-
-IF NOT init THEN
-    X[cnt] := IN;
-    init := TRUE;
-    last := tx;
-    OUT := IN;
+STEP 'NESTED_LOOP_SAMPLE_V3'
+IF NOT INIT THEN
+    CNT := 0;
+    DIR := TRUE;
+    INIT := TRUE;
     TRIG := FALSE;
 ELSE
-    IF (tx - last) >= (_T / length) THEN
-        cnt := (cnt + 1) MOD length;
-        X[cnt] := IN;
-        last := tx;
-        TRIG := TRUE;
+    I := 0;
+    WHILE I < 2 DO
+        J := 0;
+        WHILE J < 2 DO
+            IF DIR THEN
+                CNT := CNT + 1;
+            ELSE
+                CNT := CNT - 1;
+            END
 
-        sum := 0;
-        FOR i := 0 TO length - 1 DO
-            sum := sum + X;
-        END_FOR;
-        OUT := sum / length;
-    ELSE
-        TRIG := FALSE;
-    END_IF;
-END_IF;
+            IF CNT >= 3 THEN
+                DIR := FALSE;
+            ELSE
+                DIR := DIR;
+            END
 
+            IF CNT <= 0 THEN
+                DIR := TRUE;
+            ELSE
+                DIR := DIR;
+            END
+
+            OUT1 := DIR;
+            J := J + 1;
+        END_WHILE;
+        I := I + 1;
+    END_WHILE;
+    TRIG := TRUE;
+END
 ENDSTEP
 END.
