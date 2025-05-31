@@ -1,38 +1,49 @@
-PROC CLICK_MODE_NESTED_V2;
+PROC CLICK_MODE_BASIC_V2;
 VAR
-    IN_VAL : BOOL;
-    T_LONG : INTEGER;
+    IN : BOOL;
     SINGLE : BOOL;
     DOUBLE : BOOL;
     LONG : BOOL;
     TP_LONG : BOOL;
-    CNT : INTEGER;
-    LAST : BOOL;
-    TIMER_Q : BOOL;
-    I, J : INTEGER;
+
+    press_count : INT;
+    hold_count : INT;
+    i : INT;
+    last : BOOL;
 BEGIN
-STEP 'CLICK_MODE_LOGIC_NESTED'
-    SINGLE := FALSE;
-    DOUBLE := FALSE;
-    TIMER_Q := (T_PLC_MS(en := TRUE) < T_LONG);
-    
-    IF TIMER_Q THEN
-        FOR I := 0 TO 3 DO
-            FOR J := 0 TO 2 DO
-                IF NOT IN_VAL AND LAST THEN
-                    CNT := CNT + 1;
-                END
-            END
+STEP 'CLICK_MODE_LOOP_V2'
+SINGLE := FALSE;
+DOUBLE := FALSE;
+LONG := FALSE;
+TP_LONG := FALSE;
+
+IF IN THEN
+    i := 0;
+    WHILE i < 10 DO
+        hold_count := hold_count + 1;
+        i := i + 1;
+    END_WHILE;
+ELSE
+    IF last THEN
+        IF hold_count > 40 THEN
+            LONG := TRUE;
+            TP_LONG := TRUE;
+        ELSE
+            press_count := press_count + 1;
         END
-    ELSE
-        CASE CNT OF
-            1: SINGLE := TRUE;
-            2: DOUBLE := TRUE;
-        END_CASE;
-        CNT := 0;
     END
-    LAST := IN_VAL;
-    TP_LONG := NOT TIMER_Q AND (NOT LONG) AND IN_VAL;
-    LONG := NOT TIMER_Q AND IN_VAL;
+    hold_count := 0;
+END
+
+IF press_count = 1 THEN
+    SINGLE := TRUE;
+ELSIF press_count = 2 THEN
+    DOUBLE := TRUE;
+    press_count := 0;
+ELSE
+    press_count := 0;
+END
+
+last := IN;
 ENDSTEP
 END.
