@@ -16,7 +16,7 @@ python3 --version
 ```
 
 ### Running the Tool
- For Version 3:- 
+ For Version 3 of Equivalence Checker:- 
  
 To run the tool, use the following command:
 
