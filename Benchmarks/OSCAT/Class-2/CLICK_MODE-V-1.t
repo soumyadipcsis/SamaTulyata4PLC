@@ -1,38 +1,52 @@
-PROC CLICK_MODE_BASIC;
+PROC CLICK_MODE_BASIC_V1;
 VAR
     IN : BOOL;
-    T_LONG : TIME;
-
     SINGLE : BOOL;
     DOUBLE : BOOL;
     LONG : BOOL;
     TP_LONG : BOOL;
 
-    timer : TP;
     cnt : INT;
+    hold : INT;
+    loop_idx : INT;
     last : BOOL;
 BEGIN
-STEP 'BASIC_CLICK_DETECTION'
+STEP 'CLICK_MODE_LOOP_V1'
 SINGLE := FALSE;
 DOUBLE := FALSE;
+TP_LONG := FALSE;
+LONG := FALSE;
 
-timer(IN := IN, PT := T_LONG);
-
-IF timer.Q THEN
-    IF (NOT IN) AND last THEN
-        cnt := cnt + 1;
-    END
+(* Simulated nested loop for debounce *)
+IF IN THEN
+    loop_idx := 0;
+    WHILE loop_idx < 5 DO
+        hold := hold + 1;
+        loop_idx := loop_idx + 1;
+    END_WHILE;
 ELSE
-    CASE cnt OF
-        1 : SINGLE := TRUE;
-        2 : DOUBLE := TRUE;
-    END_CASE;
-    cnt := 0;
+    IF last THEN
+        IF hold > 50 THEN
+            LONG := TRUE;
+            TP_LONG := TRUE;
+        ELSE
+            cnt := cnt + 1;
+        END
+    END
+    hold := 0;
+END
+
+IF NOT IN THEN
+    IF cnt = 1 THEN
+        SINGLE := TRUE;
+    ELSIF cnt = 2 THEN
+        DOUBLE := TRUE;
+        cnt := 0;
+    ELSE
+        cnt := 0;
+    END
 END
 
 last := IN;
-TP_LONG := (NOT timer.Q) AND (NOT LONG) AND IN;
-LONG := (NOT timer.Q) AND IN;
-
 ENDSTEP
 END.
