@@ -101,7 +101,9 @@ S<sub>1</sub>: Set of Paths for N<sub>1</sub>  <br>
 
 In current version we have used [Normalizer](https://ieeexplore.ieee.org/document/58767) for checking equivalence between two expressions.
 In future version our plan to integrate SMT solver instade of current Normalizer.
+# Tool Output
 
+<img src="https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/workFlow.jpg](https://github.com/soumyadipcsis/SamaTulyata4PLC/blob/main/Report/EqChk-Report-Factorial.jpeg" width="50%"
 # Benchmarks
  Currently our benchmark directory contains 84 TCL code (.t extension). 80 benchmarks we have taken from [OSCAT](https://www.oscat.de) repo and 4 are 
  standerd industrial benchmarks.
@@ -124,7 +126,8 @@ In future version our plan to integrate SMT solver instade of current Normalizer
     
 # Migration tool 
 TCL to SFC Migration is carried out propitory tool.
-    
+
+
 
 # Tool Demo Video
 Here we use TCL version 3.
